@@ -181,6 +181,17 @@ nav a.active {
     padding: 25px 20px;
     border: 1px solid #C5D4B8;
     border-radius: 10px;
+    overflow: hidden;
+}
+
+.room-card img {
+    width: calc(100% + 40px);
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    margin: -25px -20px 15px -20px;
+    border-radius: 10px 10px 0 0;
+    background-color: #E8F0DF;
 }
 
 .room-card h3 {
