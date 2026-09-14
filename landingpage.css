@@ -16,7 +16,9 @@ h1, h2, h3 {
 
 /* Navigation */
 nav {
-    background-color: #3F6B4F;
+    background-color: rgba(63, 107, 79, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 20px 50px;
     display: flex;
     justify-content: space-between;
