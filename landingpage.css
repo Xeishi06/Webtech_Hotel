@@ -576,7 +576,9 @@ section[id], footer[id] {
 .footer-links a { color: white; }
 
 /* Bookings list - same theme, smooth */
-.bookings { min-height: 60vh; }
+.bookings { min-height: 60vh; background-color: #FFF8E7; }
+/* Category pages read cream like About; landing rooms grid stays sage */
+.rooms.category { background-color: #FFF8E7; }
 .booking-list {
     max-width: 760px;
     margin: 36px auto 0 auto;
