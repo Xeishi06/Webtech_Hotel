@@ -722,7 +722,6 @@
       if (e.target.closest('#printReceipt')) window.print();
     });
   }
-  }
 
   function initAuthNav() {
     // Swap Login/Create Account for Hi, Name/Logout when session exists.
