@@ -372,6 +372,16 @@ nav a.active {
 }
 .contact a { color: #3F6B4F; font-weight: 600; text-decoration: none; }
 .contact a:hover { color: #527A57; text-decoration: none; }
+.contact-card a {
+    display: inline-block;
+    background: #E8F0DF;
+    border: 1px solid #C5D4B8;
+    padding: 6px 14px;
+    border-radius: 16px;
+    margin-top: 4px;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.contact-card a:hover { background: #E8D5B5; transform: translateY(-1px); }
 
 .contact .main-button {
     background-color: #6F9E72;
