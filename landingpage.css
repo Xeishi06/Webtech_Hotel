@@ -1111,17 +1111,30 @@ section[id], footer[id] {
 @media (max-width: 800px) {
 
     nav {
-        flex-direction: column;
-        gap: 15px;
-        padding: 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
     }
 
-    .nav-toggle { display: inline-block; }
-    nav div { display: none; width: 100%; text-align: center; }
+    nav h2 { flex: 1; margin: 0; font-size: 20px; }
+
+    .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        margin-left: auto;
+    }
+    nav div { display: none; flex-basis: 100%; width: 100%; text-align: center; }
     nav.open div { display: block; }
 
-    nav a {
-        margin-left: 8px;
+    nav div a {
+        display: inline-block;
+        margin: 5px 3px;
     }
 
     .hero h1 {

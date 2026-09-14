@@ -271,10 +271,12 @@ footer {
 
 /* Responsive - layout only, no color changes */
 @media (max-width: 800px) {
-    nav h2 { display: block; margin: 0; flex: 1; }
-    .nav-toggle { display: inline-block; }
+    nav { align-items: center; gap: 12px; padding: 14px 16px; }
+    nav h2 { display: block; margin: 0; flex: 1; font-size: 20px; }
+    .nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; margin-left: auto; }
     nav a { display: none; margin: 8px 12px 8px 0; }
     nav.open a { display: inline-block; }
+    nav div { flex-basis: 100%; width: 100%; text-align: center; }
     .container { margin: 24px auto; padding: 20px; }
     .room-card button { width: 100%; }
 }
