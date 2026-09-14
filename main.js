@@ -1,4 +1,3 @@
-// Stella's Beach House - front-end helpers (no backend, theme unchanged)
 (function () {
   const PRICES = {
     'Couples Room': 2000,
@@ -33,7 +32,6 @@
   }
   function saveReservations(r) { localStorage.setItem('stella_reservations', JSON.stringify(r)); }
 
-  // Active nav link (same colors, just underline)
   function markActiveNav() {
     const page = (location.pathname.split('/').pop() || 'landingpage.html').toLowerCase();
     $$('nav a').forEach(a => {
@@ -42,7 +40,6 @@
     });
   }
 
-  // Mobile nav toggle (uses existing colors)
   function initMobileNav() {
     const nav = $('nav');
     if (!nav || $('.nav-toggle')) return;
@@ -108,7 +105,6 @@
   }
 
   function confirmLogout(proceed) {
-    // Themed confirm dialog (inline styles so it works on every page).
     const old = document.getElementById('logoutConfirm');
     if (old) old.remove();
     const back = document.createElement('div');
@@ -146,7 +142,6 @@
   }
 
   function roomKeyFromOption(opt) {
-    // "Couples Room - ₱2,000" -> "Couples Room"
     return (opt || '').split(' - ')[0].trim();
   }
 
@@ -162,14 +157,12 @@
     const roomSel = $('#resRoom'), cin = $('#resCheckin'), cout = $('#resCheckout');
     const summary = $('#priceSummary');
 
-    // Preselect from ?room=Couples%20Room
     const params = new URLSearchParams(location.search);
     const want = params.get('room');
     if (want && roomSel) {
       Array.from(roomSel.options).forEach(o => {
         if (roomKeyFromOption(o.text) === want) roomSel.value = o.value || o.text;
       });
-      // fallback: match by value containing room name
       if (roomSel.selectedIndex <= 0) {
         Array.from(roomSel.options).forEach((o, i) => {
           if (o.text.includes(want)) roomSel.selectedIndex = i;
@@ -177,7 +170,6 @@
       }
     }
 
-    // Min = today
     const today = new Date().toISOString().split('T')[0];
     if (cin) cin.min = today;
     if (cout) cout.min = today;
@@ -234,7 +226,6 @@
       if (mine.length) {
         all = mine;
       } else if (all.length) {
-        // Logged in but no bookings under this email: show nothing-new state
         const note = document.createElement('p');
         note.className = 'form-msg';
         note.textContent = `No bookings yet under ${session.email}. Guest bookings on this device are hidden while logged in.`;
@@ -361,7 +352,6 @@
   }
 
   function confirmAction(title, body, stayLabel, goLabel, proceed) {
-    // Generic themed confirm (same palette as logout confirm).
     const old = document.getElementById('actionConfirm');
     if (old) old.remove();
     const back = document.createElement('div');
@@ -430,7 +420,6 @@
   }
 
   function initSmoothScroll() {
-    // Smooth scroll for same-page #links with sticky-nav offset
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a[href^="#"]');
       if (!a) return;
@@ -464,8 +453,6 @@
   }
 
   function ensureReserveModal() {
-    // Category pages have no modal markup: inject the same reserve
-    // dialog so Reserve opens in place instead of jumping pages.
     if (document.getElementById('reserveModal')) return;
     const wrap = document.createElement('div');
     wrap.innerHTML = `<div class="modal-backdrop" id="reserveModal" hidden>
@@ -817,7 +804,6 @@
           if (o.text.includes(want) || roomKey(o.text) === want) roomSel.selectedIndex = i;
         });
       }
-      // Prefill from login session (convenience, still optional)
       try {
         const s = getSession();
         const users = getUsers();
@@ -829,7 +815,7 @@
           if (document.getElementById('qContact') && !document.getElementById('qContact').value && me.contact) document.getElementById('qContact').value = me.contact;
           if (note) { note.hidden = false; note.textContent = `Booking as ${me.email} (logged in) — you can still edit.`; }
         } else if (note) { note.hidden = true; }
-      } catch { /* guest mode */ }
+      } catch {}
       updateTotal();
       gotoStep(0);
       modal.hidden = false;
@@ -849,7 +835,6 @@
       if (e.key === 'Escape' && !modal.hidden) close();
     });
 
-    // Support landingpage.html?reserve=Family%20Room%206 (for rooms.html links)
     const params = new URLSearchParams(location.search);
     if (params.get('reserve') !== null) open(params.get('reserve') || '');
 
@@ -971,7 +956,6 @@
   }
 
   function initAuthNav() {
-    // Swap Login/Create Account for Hi, Name/Logout when session exists.
     const s = getSession();
     if (!s) return;
     const first = (s.name || s.email || 'Guest').split(' ')[0];
@@ -1018,10 +1002,9 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !modal.hidden) close();
     });
-    // Support landingpage.html?login=1 (old login.html links/bookmarks)
     try {
       if (new URLSearchParams(location.search).get('login') !== null && !getSession()) open();
-    } catch { /* ignore */ }
+    } catch {}
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -1065,10 +1048,9 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !modal.hidden) close();
     });
-    // Support landingpage.html?register=1 (old register.html links/bookmarks)
     try {
       if (new URLSearchParams(location.search).get('register') !== null && !getSession()) open();
-    } catch { /* ignore */ }
+    } catch {}
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -1180,7 +1162,6 @@
   }
 
   function initFocusTrap() {
-    // Keep Tab cycling inside the open modal (keyboard + screen readers).
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Tab') return;
       const open = Array.from(document.querySelectorAll('.modal-backdrop')).find(m => !m.hidden);

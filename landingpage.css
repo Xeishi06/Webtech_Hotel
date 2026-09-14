@@ -18,7 +18,7 @@ h1, h2, h3 {
 }
 
 
-/* Navigation */
+
 nav {
     background-color: rgba(63, 107, 79, 0.88);
     backdrop-filter: blur(10px);
@@ -96,7 +96,7 @@ nav a.active {
 }
 
 
-/* Hero */
+
 .hero {
     height: 600px;
     display: flex;
@@ -136,7 +136,7 @@ nav a.active {
 }
 
 
-/* Buttons */
+
 .main-button,
 .second-button {
     display: inline-block;
@@ -166,7 +166,7 @@ nav a.active {
 }
 
 
-/* About */
+
 .about {
     background-color: #FFF8E7;
     text-align: center;
@@ -186,7 +186,7 @@ nav a.active {
 }
 
 
-/* Section Label */
+
 .label {
     color: #6F9E72;
     font-weight: bold;
@@ -196,7 +196,7 @@ nav a.active {
 }
 
 
-/* Rooms */
+
 .rooms {
     padding: 80px 24px;
     text-align: center;
@@ -307,7 +307,7 @@ nav a.active {
 }
 
 
-/* Features */
+
 .features {
     background-color: #FFF8E7;
     text-align: center;
@@ -344,7 +344,7 @@ nav a.active {
 }
 
 
-/* Contact */
+
 .contact {
     background-color: #E8F0DF;
     color: #3F6B4F;
@@ -415,7 +415,7 @@ nav a.active {
 }
 
 
-/* Footer */
+
 footer {
     background-color: #3F6B4F;
     color: white;
@@ -430,7 +430,7 @@ footer.footer-compact { padding: 16px 12px; }
 footer.footer-compact h3 { font-size: 16px; margin: 0 0 4px 0; }
 footer.footer-compact p { margin: 3px; font-size: 13px; }
 
-/* Smooth UI - same palette, motion only */
+
 html {
     scroll-behavior: smooth;
 }
@@ -489,7 +489,7 @@ section[id], footer[id] {
     .room-card:hover img { transform: none; }
 }
 
-/* Landing polish - same palette only */
+
 .hero-location {
     font-size: 15px;
     opacity: 0.95;
@@ -556,7 +556,7 @@ section[id], footer[id] {
 .rooms-link:hover { text-decoration: none; color: #527A57; }
 .crumbs { margin: 0 0 6px 0; }
 .crumbs a { color: #3F6B4F; font-weight: bold; text-decoration: none; }
-/* Gallery strip - same palette only */
+
 .gallery {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -618,9 +618,9 @@ section[id], footer[id] {
 .muted { color: #666; font-size: 13px; }
 .footer-links a { color: white; }
 
-/* Bookings list - same theme, smooth */
+
 .bookings { min-height: 60vh; background-color: #FFF8E7; }
-/* Category pages read cream like About; landing rooms grid stays sage */
+
 .rooms.category { background-color: #FFF8E7; }
 .booking-list {
     max-width: 760px;
@@ -742,7 +742,7 @@ section[id], footer[id] {
 }
 .empty-state h2 { color: #3F6B4F; }
 
-/* Account page - same theme, smooth */
+
 .account-page { min-height: 60vh; background-color: #FFF8E7; }
 .account-card {
     background: white;
@@ -773,7 +773,7 @@ section[id], footer[id] {
 .footer-stay { margin: 4px; font-size: 14px; }
 .muted-light { opacity: 0.85; font-size: 13px; }
 
-/* Reviews - same palette only */
+
 .reviews {
     background-color: #FFF8E7;
     text-align: center;
@@ -837,7 +837,7 @@ section[id], footer[id] {
     margin-top: 5px;
 }
 
-/* Quick-reserve modal - same palette only */
+
 .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -968,7 +968,7 @@ section[id], footer[id] {
 .form-msg.error { background: #fdecea; border-color: #e0a8a8; color: #7a2e2e; }
 .form-msg.success { background: #E8F0DF; border-color: #6F9E72; }
 
-/* Receipt - same palette only */
+
 .receipt { text-align: left; }
 .receipt h2, .receipt > p { text-align: center; }
 .receipt hr { border: 0; border-top: 1px dashed #C5D4B8; margin: 14px 0; }
@@ -991,7 +991,7 @@ section[id], footer[id] {
     .receipt .modal-row, .receipt a { display: none; }
 }
 
-/* Reserve modal as mini webpage: room panel + form */
+
 .modal-wide { max-width: 880px; padding: 0; overflow-y: auto; }
 .modal-grid { display: grid; grid-template-columns: 1fr 1.25fr; }
 .modal-room { background: #E8F0DF; padding: 26px 24px; }
@@ -1095,7 +1095,7 @@ section[id], footer[id] {
     .modal-row > div { flex: 1 1 140px; }
     .feature-card, .contact-info div { max-width: 100%; }
 }
-/* Small phones - layout only, no color changes */
+
 @media (max-width: 480px) {
     nav { padding: 14px; }
     nav h2 { font-size: 18px; }
@@ -1115,11 +1115,11 @@ section[id], footer[id] {
     .receipt dl > div { flex-direction: column; gap: 0; }
     .receipt dd { text-align: left; }
 }
-/* 3x2 grid: 3 cols desktop, 2 cols tablet, 1 col mobile */
+
 @media (max-width: 1000px) {
     .room-container { grid-template-columns: repeat(2, 1fr); }
 }
-/* Tablet: burger takes over before links start wrapping */
+
 @media (max-width: 1100px) {
     nav { flex-wrap: wrap; }
     nav h2 { flex: 1; }
@@ -1142,7 +1142,7 @@ section[id], footer[id] {
 }
 
 
-/* Mobile */
+
 @media (max-width: 800px) {
 
     nav {
