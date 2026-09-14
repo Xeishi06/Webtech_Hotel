@@ -104,12 +104,12 @@
         <div class="room-container">
 
             <div class="room-card">
-                <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80" alt="Couples Room at Stella's Beach House" loading="lazy" />
+                <a href="room-couples.html" aria-label="See Couples Room options"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80" alt="Couples Room at Stella's Beach House" loading="lazy" /></a>
                 <span class="badge">Best for couples</span>
-                <h3>Couples Room</h3>
-                <p>Good for 2 persons</p>
+                <a href="room-couples.html" class="card-title-link"><h3>Couples Room</h3></a>
+                <p>Good for 2 persons • 3 options from ₱2,000</p>
                 <strong>₱2,000 per night</strong>
-                <p class="card-links"><button type="button" class="reserve-pill" data-reserve="Couples%20Room">Reserve →</button><a class="details-link" href="rooms.html">Details →</a></p>
+                <p class="card-links"><button type="button" class="reserve-pill" data-reserve="Couples%20Room">Reserve →</button><a class="details-link" href="room-couples.html">See options →</a></p>
             </div>
 
             <div class="room-card">
@@ -307,6 +307,8 @@
                 <p class="muted">No account needed — we'll confirm via your email.</p>
                 <p class="muted" id="quickSessionNote" hidden></p>
                 <form id="quickReserveForm" novalidate>
+                    <p class="steps"><span id="stepDot1" class="step-dot current">1 Details</span> → <span id="stepDot2" class="step-dot">2 Payment</span></p>
+                    <div id="payStep1">
                     <label for="qName">Full Name</label>
                     <input id="qName" type="text" placeholder="Enter your name" required autocomplete="name" />
                     <label for="qEmail">Gmail / Email</label>
@@ -332,15 +334,23 @@
                             <input id="qCheckout" type="date" required />
                         </div>
                     </div>
-                    <label for="qPay">Payment Preference (pay on arrival)</label>
-                    <select id="qPay" required>
-                        <option value="">Select payment preference</option>
-                        <option>Card Payment</option>
-                        <option>GCash</option>
-                        <option>Bank Transfer</option>
-                    </select>
                     <div id="quickTotal" aria-live="polite">Select a room and valid dates to see your total.</div>
-                    <button type="submit" class="main-button modal-submit">Confirm Reservation</button>
+                    <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
+                    </div>
+                    <div id="payStep2" hidden>
+                        <div class="pay-box">
+                            <p class="label">PAY WITH GCASH</p>
+                            <p class="pay-total" id="payTotalLine">Total: —</p>
+                            <p>Send payment to <strong>0912 345 6789</strong><br /><span class="muted">Stella's Beach House • QR code coming soon</span></p>
+                        </div>
+                        <label for="qRef">GCash Reference Number</label>
+                        <input id="qRef" type="text" inputmode="numeric" maxlength="13" placeholder="e.g. 1234567890123" required />
+                        <p class="muted">No ref = no reservation. Unpaid holds never block the calendar.</p>
+                        <div class="modal-row">
+                            <button type="button" class="second-button modal-submit" id="backToStep1" style="border:none;cursor:pointer;font:inherit;">← Back</button>
+                            <button type="submit" class="main-button modal-submit">Confirm Booking</button>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div id="modalDoneView" hidden>

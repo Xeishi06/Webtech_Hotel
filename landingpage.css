@@ -491,6 +491,11 @@ nav a:hover {
 }
 .rooms-link { color: #3F6B4F; font-weight: bold; text-decoration: none; }
 .rooms-link:hover { text-decoration: none; color: #527A57; }
+.crumbs { margin: 0 0 6px 0; }
+.crumbs a { color: #3F6B4F; font-weight: bold; text-decoration: none; }
+.card-title-link { text-decoration: none; }
+.card-title-link h3:hover { color: #527A57; }
+.rooms-link:hover { text-decoration: none; color: #527A57; }
 .cta-card {
     background-color: #E8D5B5;
     border-color: #C5D4B8;
