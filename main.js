@@ -11,6 +11,11 @@
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
   const peso = (n) => '₱' + Number(n).toLocaleString('en-PH');
+  const fmtLong = (iso) => {
+    const d = new Date(String(iso) + 'T00:00:00');
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' });
+  };
 
   function getUsers() {
     try { return JSON.parse(localStorage.getItem('stella_users') || '[]'); }
@@ -252,7 +257,7 @@
       div.className = 'reservation-card';
       div.innerHTML = `<h2>${r.room}</h2>
         <p><strong>ID:</strong> ${r.id}</p>
-        <p><strong>Check-in:</strong> ${r.checkin} &nbsp; <strong>Check-out:</strong> ${r.checkout}</p>
+        <p><strong>Check-in:</strong> ${fmtLong(r.checkin)} &nbsp; <strong>Check-out:</strong> ${fmtLong(r.checkout)}</p>
         <p><strong>Nights:</strong> ${r.nights} &nbsp; <strong>Total:</strong> ${peso(r.total)}${r.deposit ? ` (deposit ${peso(r.deposit)} paid, ${peso(r.balance != null ? r.balance : r.total - r.deposit)} at check-in)` : ''}</p>
         <p><strong>Payment:</strong> ${r.payment || '-'}${r.ref ? ' • Ref ' + r.ref : ''} &nbsp; <strong>Status:</strong> ${r.status}</p>
         <button type="button" data-cancel="${r.id}">Cancel Reservation</button>`;
@@ -665,7 +670,7 @@
         overlaps(cin.value, cout.value, r.checkin, r.checkout));
       if (clash) {
         const alt = nextFree(room, n, cin.value);
-        return { err: `${room} is already booked ${clash.checkin} → ${clash.checkout}.`, alt };
+        return { err: `${room} is already booked ${fmtLong(clash.checkin)} → ${fmtLong(clash.checkout)}.`, alt };
       }
       return { room, n, full: price * n, dep: Math.round(price * n / 2) };
     }
@@ -734,7 +739,7 @@
         const sel = dateSelection();
         if (sel.err) { resetAvailStep(); return showMsg(form, sel.err, false); }
         const bs = $('#bookSummary');
-        if (bs) bs.textContent = `✓ ${sel.room} available ${cin.value} → ${cout.value} — ${sel.n} night${sel.n > 1 ? 's' : ''}, ${peso(sel.full)} total (${peso(sel.dep)} deposit).`;
+        if (bs) bs.textContent = `✓ ${sel.room} available ${fmtLong(cin.value)} → ${fmtLong(cout.value)} — ${sel.n} night${sel.n > 1 ? 's' : ''}, ${peso(sel.full)} total (${peso(sel.dep)} deposit).`;
         gotoStep(1);
         return;
       }
@@ -744,7 +749,7 @@
         if (ar) {
           ar.className = 'bad';
           ar.innerHTML = `<strong>Those dates are taken.</strong><br />${sel.err}` + (sel.alt
-            ? `<div class="alt-suggest"><span>Next free for ${nights()} night(s):<br /><strong>${sel.alt.start} → ${sel.alt.end}</strong></span><button type="button" id="useAltDates" data-cin="${sel.alt.start}" data-cout="${sel.alt.end}">Use these dates</button></div>`
+            ? `<div class="alt-suggest"><span>Next free for ${nights()} night(s):<br /><strong>${fmtLong(sel.alt.start)} → ${fmtLong(sel.alt.end)}</strong></span><button type="button" id="useAltDates" data-cin="${sel.alt.start}" data-cout="${sel.alt.end}">Use these dates</button></div>`
             : '');
         }
         const old = form.querySelector('.form-msg');
@@ -825,8 +830,8 @@
         set('rName', name);
         set('rEmail', email);
         set('rRoom', room);
-        set('rIn', cin.value);
-        set('rOut', cout.value);
+        set('rIn', fmtLong(cin.value));
+        set('rOut', fmtLong(cout.value));
         set('rRate', `${peso(PRICES[room])} / night`);
         set('rNights', `${n} night${n > 1 ? 's' : ''}`);
         set('rPay', payMethod);
