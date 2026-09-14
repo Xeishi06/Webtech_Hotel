@@ -395,12 +395,39 @@
                     <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
                     </div>
                     <div id="payStep2" hidden>
-                        <div class="pay-box">
+                        <div class="pay-methods" role="tablist" aria-label="Payment method">
+                            <button type="button" class="pay-method current" data-pay="GCash">GCash</button>
+                            <button type="button" class="pay-method" data-pay="Card">Card</button>
+                            <button type="button" class="pay-method" data-pay="Bank">Bank</button>
+                        </div>
+                        <div class="pay-box" id="payBoxGcash">
                             <p class="label">PAY WITH GCASH</p>
                             <p class="pay-total" id="payTotalLine">Total: —</p>
                             <p>Send payment to <strong>0912 345 6789</strong><br /><span class="muted">Stella's Beach House • QR code coming soon</span></p>
                         </div>
-                        <label for="qRef">GCash Reference Number</label>
+                        <div class="pay-box" id="payBoxCard" hidden>
+                            <p class="label">PAY WITH CARD</p>
+                            <p class="pay-total">Total: <span class="pay-total-val">—</span></p>
+                            <p class="muted">Demo only — no real charge. Enter card details as printed.</p>
+                            <label for="qCardNum">Card Number</label>
+                            <input id="qCardNum" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" />
+                            <div class="modal-row">
+                                <div>
+                                    <label for="qCardExp">Expiry (MM/YY)</label>
+                                    <input id="qCardExp" type="text" maxlength="5" placeholder="MM/YY" />
+                                </div>
+                                <div>
+                                    <label for="qCardCvc">CVC</label>
+                                    <input id="qCardCvc" type="text" inputmode="numeric" maxlength="4" placeholder="123" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pay-box" id="payBoxBank" hidden>
+                            <p class="label">BANK TRANSFER</p>
+                            <p class="pay-total">Total: <span class="pay-total-val">—</span></p>
+                            <p>Transfer to <strong>Stella's Beach House • BDO •• 1234</strong><br /><span class="muted">Full account details sent with confirmation email.</span></p>
+                        </div>
+                        <label for="qRef" id="qRefLabel">GCash Reference Number</label>
                         <input id="qRef" type="text" inputmode="numeric" maxlength="13" placeholder="e.g. 1234567890123" required />
                         <p class="muted">No ref = no reservation. Unpaid holds never block the calendar.</p>
                         <div class="modal-row">
@@ -506,8 +533,29 @@
       }
       const ptl = $('#payTotalLine');
       if (ptl) ptl.textContent = (!price || n <= 0) ? 'Total: —' : `Total: ${peso(price * n)} (${n} night${n > 1 ? 's' : ''})`;
+      document.querySelectorAll('.pay-total-val').forEach(el => {
+        el.textContent = (!price || n <= 0) ? '—' : `${peso(price * n)} (${n} night${n > 1 ? 's' : ''})`;
+      });
     }
     [roomSel, cin, cout].forEach(el => el && el.addEventListener('change', updateTotal));
+
+    let payMethod = 'GCash';
+    function setPayMethod(m) {
+      payMethod = m;
+      document.querySelectorAll('.pay-method').forEach(b => b.classList.toggle('current', b.dataset.pay === m));
+      const boxes = { GCash: $('#payBoxGcash'), Card: $('#payBoxCard'), Bank: $('#payBoxBank') };
+      Object.keys(boxes).forEach(k => { if (boxes[k]) boxes[k].hidden = k !== m; });
+      const lbl = $('#qRefLabel'), ref = $('#qRef');
+      if (lbl && ref) {
+        if (m === 'GCash') { lbl.textContent = 'GCash Reference Number'; ref.placeholder = 'e.g. 1234567890123'; ref.style.display = ''; lbl.style.display = ''; }
+        else if (m === 'Bank') { lbl.textContent = 'Bank Transaction Reference'; ref.placeholder = 'e.g. TXN987654'; ref.style.display = ''; lbl.style.display = ''; }
+        else { lbl.style.display = 'none'; ref.style.display = 'none'; } // Card: details act as proof
+      }
+    }
+    document.addEventListener('click', (e) => {
+      const pm = e.target.closest('.pay-method');
+      if (pm && modal && !modal.hidden) setPayMethod(pm.dataset.pay);
+    });
 
     function gotoStep(n) {
       const s1 = $('#payStep1'), s2 = $('#payStep2');
@@ -585,7 +633,7 @@
     if (params.get('reserve') !== null) open(params.get('reserve') || '');
 
     const toPay = $('#toPayStep');
-    if (toPay) toPay.addEventListener('click', () => { if (validStep1()) { gotoStep(2); updateTotal(); } });
+    if (toPay) toPay.addEventListener('click', () => { if (validStep1()) { gotoStep(2); setPayMethod(payMethod); updateTotal(); } });
     const back1 = $('#backToStep1');
     if (back1) back1.addEventListener('click', () => gotoStep(1));
 
@@ -593,8 +641,22 @@
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         if (!validStep1()) { gotoStep(1); return; }
-        const ref = ($('#qRef').value || '').replace(/\D/g, '');
-        if (ref.length < 10 || ref.length > 13) return showMsg(form, 'Enter your 10–13 digit GCash reference number.', false);
+        let ref = '';
+        if (payMethod === 'GCash') {
+          ref = ($('#qRef').value || '').replace(/\D/g, '');
+          if (ref.length < 10 || ref.length > 13) return showMsg(form, 'Enter your 10–13 digit GCash reference number.', false);
+        } else if (payMethod === 'Bank') {
+          ref = ($('#qRef').value || '').trim();
+          if (!/^[A-Za-z0-9]{6,20}$/.test(ref)) return showMsg(form, 'Enter your bank transaction reference (6–20 letters/numbers).', false);
+        } else {
+          const num = ($('#qCardNum').value || '').replace(/\D/g, '');
+          const exp = ($('#qCardExp').value || '').trim();
+          const cvc = ($('#qCardCvc').value || '').replace(/\D/g, '');
+          if (num.length !== 16) return showMsg(form, 'Enter the 16-digit card number.', false);
+          if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(exp)) return showMsg(form, 'Enter card expiry as MM/YY.', false);
+          if (cvc.length < 3 || cvc.length > 4) return showMsg(form, 'Enter the 3–4 digit CVC.', false);
+          ref = 'CARD••' + num.slice(-4);
+        }
         const name = $('#qName').value.trim();
         const email = $('#qEmail').value.trim();
         const contact = $('#qContact').value.trim();
@@ -606,7 +668,7 @@
           name, email, contact, room,
           checkin: cin.value, checkout: cout.value,
           nights: n, total: PRICES[room] * n,
-          payment: 'GCash',
+          payment: payMethod,
           ref,
           status: 'Confirmed (paid)',
           by: email,
@@ -617,7 +679,7 @@
         if (formView) formView.hidden = true;
         if (doneView) doneView.hidden = false;
         const dt = $('#modalDoneText');
-        if (dt) dt.textContent = `${room} × ${n} night${n > 1 ? 's' : ''} — ${peso(booking.total)}. Confirmation will be sent to ${email}. Show this ID at check-in.`;
+        if (dt) dt.textContent = `${room} × ${n} night${n > 1 ? 's' : ''} — ${peso(booking.total)} via ${payMethod}. Confirmation will be sent to ${email}. Show this ID at check-in.`;
         const bid = $('#modalBookingId');
         if (bid) bid.textContent = `${booking.id} • GCash ref ${ref}`;
         form.reset();

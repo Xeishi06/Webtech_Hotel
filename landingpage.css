@@ -671,6 +671,24 @@ nav a:hover {
     padding: 14px 16px;
     margin-bottom: 6px;
 }
+.pay-methods {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.pay-method {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #C5D4B8;
+    background: white;
+    color: #3F6B4F;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+.pay-method.current { background: #3F6B4F; border-color: #3F6B4F; color: white; }
 .pay-total { font-size: 20px; color: #3F6B4F; font-weight: bold; margin: 6px 0; }
 @media (max-width: 760px) {
     .modal-grid { grid-template-columns: 1fr; }

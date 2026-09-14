@@ -341,12 +341,39 @@
                     <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
                     </div>
                     <div id="payStep2" hidden>
-                        <div class="pay-box">
+                        <div class="pay-methods" role="tablist" aria-label="Payment method">
+                            <button type="button" class="pay-method current" data-pay="GCash">GCash</button>
+                            <button type="button" class="pay-method" data-pay="Card">Card</button>
+                            <button type="button" class="pay-method" data-pay="Bank">Bank</button>
+                        </div>
+                        <div class="pay-box" id="payBoxGcash">
                             <p class="label">PAY WITH GCASH</p>
                             <p class="pay-total" id="payTotalLine">Total: —</p>
                             <p>Send payment to <strong>0912 345 6789</strong><br /><span class="muted">Stella's Beach House • QR code coming soon</span></p>
                         </div>
-                        <label for="qRef">GCash Reference Number</label>
+                        <div class="pay-box" id="payBoxCard" hidden>
+                            <p class="label">PAY WITH CARD</p>
+                            <p class="pay-total">Total: <span class="pay-total-val">—</span></p>
+                            <p class="muted">Demo only — no real charge. Enter card details as printed.</p>
+                            <label for="qCardNum">Card Number</label>
+                            <input id="qCardNum" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" />
+                            <div class="modal-row">
+                                <div>
+                                    <label for="qCardExp">Expiry (MM/YY)</label>
+                                    <input id="qCardExp" type="text" maxlength="5" placeholder="MM/YY" />
+                                </div>
+                                <div>
+                                    <label for="qCardCvc">CVC</label>
+                                    <input id="qCardCvc" type="text" inputmode="numeric" maxlength="4" placeholder="123" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pay-box" id="payBoxBank" hidden>
+                            <p class="label">BANK TRANSFER</p>
+                            <p class="pay-total">Total: <span class="pay-total-val">—</span></p>
+                            <p>Transfer to <strong>Stella's Beach House • BDO •• 1234</strong><br /><span class="muted">Full account details sent with confirmation email.</span></p>
+                        </div>
+                        <label for="qRef" id="qRefLabel">GCash Reference Number</label>
                         <input id="qRef" type="text" inputmode="numeric" maxlength="13" placeholder="e.g. 1234567890123" required />
                         <p class="muted">No ref = no reservation. Unpaid holds never block the calendar.</p>
                         <div class="modal-row">
