@@ -1072,10 +1072,30 @@ section[id], footer[id] {
 .pay-total { font-size: 20px; color: #3F6B4F; font-weight: bold; margin: 6px 0; }
 @media (max-width: 760px) {
     .modal-grid { grid-template-columns: 1fr; }
-    .modal { max-height: 92vh; }
+    .modal-form { padding: 22px 18px; }
     .modal-row { flex-wrap: wrap; }
     .modal-row > div { flex: 1 1 140px; }
     .feature-card, .contact-info div { max-width: 100%; }
+}
+/* Small phones - layout only, no color changes */
+@media (max-width: 480px) {
+    nav { padding: 14px; }
+    nav h2 { font-size: 18px; }
+    .hero { height: auto; min-height: 520px; padding: 40px 0; }
+    .hero h1 { font-size: 32px; }
+    .hero p { font-size: 16px; }
+    .about, .features, .reviews { padding: 56px 16px; }
+    .about h2, .features h2, .rooms h2, .contact h2, .reviews h2 { font-size: 27px; }
+    .room-card, .review-card { padding: 20px 16px; }
+    .room-card img { height: 170px; }
+    .contact-info div { width: 100%; }
+    .gallery { grid-template-columns: 1fr; }
+    .gallery img { height: 200px; }
+    .cat-tabs a { padding: 7px 13px; font-size: 13px; }
+    .modal-backdrop { padding: 10px; }
+    .pay-methods { flex-direction: column; }
+    .receipt dl > div { flex-direction: column; gap: 0; }
+    .receipt dd { text-align: left; }
 }
 /* 3x2 grid: 3 cols desktop, 2 cols tablet, 1 col mobile */
 @media (max-width: 1000px) {

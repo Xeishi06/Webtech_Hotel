@@ -278,6 +278,12 @@ footer {
     .container { margin: 24px auto; padding: 20px; }
     .room-card button { width: 100%; }
 }
+@media (max-width: 480px) {
+    nav { padding: 14px; }
+    nav h2 { font-size: 18px; }
+    .container { margin: 16px auto; padding: 16px; }
+    .room-card { padding: 16px; }
+}
 
 /* Smooth UI - same palette, motion only */
 html { scroll-behavior: smooth; }
