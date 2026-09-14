@@ -796,12 +796,13 @@ nav a:hover {
 .modal-room img {
     width: calc(100% + 48px);
     max-width: none;
-    height: 220px;
-    object-fit: contain;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
     display: block;
     margin: -26px -24px 0 -24px;
     border-radius: 0;
-    background-color: #3F6B4F;
+    background-color: #E8F0DF;
 }
 .gallery-main { position: relative; }
 .gallery-main #mRoomImg { margin-top: -26px; }
@@ -887,7 +888,6 @@ nav a:hover {
 .pay-total { font-size: 20px; color: #3F6B4F; font-weight: bold; margin: 6px 0; }
 @media (max-width: 760px) {
     .modal-grid { grid-template-columns: 1fr; }
-    .modal-room img { height: 170px; }
     .modal { max-height: 92vh; }
     .modal-row { flex-wrap: wrap; }
     .modal-row > div { flex: 1 1 140px; }
