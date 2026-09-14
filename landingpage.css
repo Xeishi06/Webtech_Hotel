@@ -180,7 +180,7 @@ nav a.active {
 .rooms {
     padding: 80px 24px;
     text-align: center;
-    background-color: #FFF8E7;
+    background-color: #E8F0DF;
 }
 
 .rooms h2 {
@@ -324,7 +324,7 @@ nav a.active {
 
 /* Contact */
 .contact {
-    background-color: #FFF8E7;
+    background-color: #E8F0DF;
     color: #3F6B4F;
     text-align: center;
     padding: 80px 20px;
@@ -501,9 +501,8 @@ section[id], footer[id] {
 }
 .badge {
     display: inline-block;
-    background-color: white;
+    background-color: #E8D5B5;
     color: #3F6B4F;
-    border: 1px solid #C5D4B8;
     font-size: 12px;
     font-weight: bold;
     padding: 4px 10px;
@@ -554,8 +553,8 @@ section[id], footer[id] {
 .card-title-link h3:hover { color: #527A57; }
 .rooms-link:hover { text-decoration: none; color: #527A57; }
 .cta-card {
-    background-color: white;
-    border: 2px dashed #6F9E72;
+    background-color: #E8D5B5;
+    border: 1px solid #C5D4B8;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -699,7 +698,7 @@ section[id], footer[id] {
 .empty-state h2 { color: #3F6B4F; }
 
 /* Account page - same theme, smooth */
-.account-page { min-height: 60vh; }
+.account-page { min-height: 60vh; background-color: #E8D5B5; }
 .account-card {
     background: white;
     border: 1px solid #C5D4B8;
