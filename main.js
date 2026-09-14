@@ -97,7 +97,7 @@
       const found = users.find(u => u.email === email && u.pw === pw);
       if (!found) return showMsg(form, 'Invalid email or password. Register first if you are new.', false);
       setSession({ name: found.name, email: found.email });
-      showMsg(form, 'Welcome back, ' + found.name + '!', true);
+      showMsg(form, 'Welcome, ' + found.name + '!', true);
       setTimeout(() => location.href = 'landingpage.html', 700);
     });
   }
@@ -504,7 +504,7 @@
         const found = getUsers().find(u => u.email === email && u.pw === pw);
         if (!found) return showMsg(form, 'Invalid email or password. Register first if you are new.', false);
         setSession({ name: found.name, email: found.email });
-        showMsg(form, 'Welcome back, ' + found.name + '!', true);
+        showMsg(form, 'Welcome, ' + found.name + '!', true);
         initAuthNav();
         setTimeout(close, 700);
       });
