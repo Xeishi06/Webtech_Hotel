@@ -205,3 +205,18 @@ footer {
     .container { margin: 24px auto; padding: 20px; }
     .room-card button { width: 100%; }
 }
+
+/* Smooth UI - same palette, motion only */
+html { scroll-behavior: smooth; }
+button, .room-card, .reservation-card, .container {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+button:hover { transform: translateY(-1px); }
+.room-card:hover, .reservation-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(63, 107, 79, 0.15);
+}
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    button, .room-card { transition: none; transform: none; }
+}

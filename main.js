@@ -260,9 +260,45 @@
     });
   }
 
+  function initSmoothScroll() {
+    // Smooth scroll for same-page #links with sticky-nav offset
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const nav = document.querySelector('nav');
+      const offset = (nav ? nav.offsetHeight : 70) + 12;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+      if (nav && nav.classList.contains('open')) nav.classList.remove('open');
+      history.replaceState(null, '', id);
+    });
+  }
+
+  function initReveal() {
+    const els = document.querySelectorAll('.about, .room-card, .feature-card, .contact-card, .contact-info div, .rooms h2, .features h2, .contact h2');
+    if (!('IntersectionObserver' in window) || !els.length) return;
+    els.forEach(el => el.classList.add('reveal'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          en.target.classList.add('visible');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     markActiveNav();
     initMobileNav();
+    initSmoothScroll();
+    initReveal();
     initRegister();
     initLogin();
     initLogout();
