@@ -496,6 +496,26 @@ nav a:hover {
 .rooms-link:hover { text-decoration: none; color: #527A57; }
 .crumbs { margin: 0 0 6px 0; }
 .crumbs a { color: #3F6B4F; font-weight: bold; text-decoration: none; }
+.cat-tabs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 0 22px 0;
+}
+.cat-tabs a {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 1px solid #C5D4B8;
+    background: white;
+    color: #3F6B4F;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+.cat-tabs a:hover { background: #E8F0DF; text-decoration: none; }
+.cat-tabs a.active { background: #3F6B4F; border-color: #3F6B4F; color: white; }
 .card-title-link { text-decoration: none; }
 .card-title-link h3:hover { color: #527A57; }
 .rooms-link:hover { text-decoration: none; color: #527A57; }
