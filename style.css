@@ -168,6 +168,56 @@ a:hover {
     color: #6F9E72;
 }
 
+.container-wide { max-width: 760px; }
+.muted { color: #666; font-size: 0.92em; }
+.btn-link {
+    display: inline-block;
+    background: #6F9E72;
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.btn-link:hover { background: #527A57; color: white !important; }
+.empty-state {
+    background: #E8F0DF;
+    border: 1px dashed #C5D4B8;
+    border-radius: 10px;
+    padding: 30px 24px;
+    text-align: center;
+    margin-top: 20px;
+}
+.empty-state h2 { color: #3F6B4F; }
+.status-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 12px;
+    background: #E8F0DF;
+    color: #3F6B4F;
+    border: 1px solid #6F9E72;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+.status-badge.cancelled {
+    background: #fdecea;
+    color: #7a2e2e;
+    border-color: #e0a8a8;
+}
+.reservation-card.cancelled { opacity: 0.75; }
+.id-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.copy-btn {
+    width: auto;
+    padding: 6px 12px;
+    margin: 0;
+    font-size: 13px;
+    border-radius: 14px;
+}
+.cancel-btn { background-color: #a33d3d; }
+.cancel-btn:hover { background-color: #7f2d2d; }
+
 /* Helpers - same palette only */
 .form-msg {
     padding: 10px 12px;

@@ -250,24 +250,75 @@
       ok.textContent = 'Reservation saved! See it below.';
       list.before(ok);
     }
-    if (!all.length) return; // keep static sample card
+    if (!all.length) return; // keep static empty state
     list.innerHTML = '';
     all.slice().reverse().forEach(r => {
+      const cancelled = String(r.status || '').toLowerCase().startsWith('cancelled');
       const div = document.createElement('div');
-      div.className = 'reservation-card';
-      div.innerHTML = `<h2>${r.room}</h2>
-        <p><strong>ID:</strong> ${r.id}</p>
+      div.className = 'reservation-card' + (cancelled ? ' cancelled' : '');
+      div.innerHTML = `<h2>${r.room}<span class="status-badge${cancelled ? ' cancelled' : ''}">${r.status || 'Confirmed'}</span></h2>
+        <p class="id-row"><strong>ID:</strong> ${r.id} <button type="button" class="copy-btn" data-copy="${r.id}">Copy ID</button></p>
         <p><strong>Check-in:</strong> ${fmtLong(r.checkin)} &nbsp; <strong>Check-out:</strong> ${fmtLong(r.checkout)}</p>
-        <p><strong>Nights:</strong> ${r.nights} &nbsp; <strong>Total:</strong> ${peso(r.total)}${r.deposit ? ` (deposit ${peso(r.deposit)} paid, ${peso(r.balance != null ? r.balance : r.total - r.deposit)} at check-in)` : ''}</p>
-        <p><strong>Payment:</strong> ${r.payment || '-'}${r.ref ? ' • Ref ' + r.ref : ''} &nbsp; <strong>Status:</strong> ${r.status}</p>
-        <button type="button" data-cancel="${r.id}">Cancel Reservation</button>`;
+        <p><strong>Nights:</strong> ${r.nights} &nbsp; <strong>Total:</strong> ${peso(r.total)}${r.deposit ? ` (deposit ${peso(r.deposit)} paid)` : ''}</p>
+        <p><strong>Payment:</strong> ${r.payment || '-'}${r.ref ? ' • Ref ' + r.ref : ''}</p>
+        ${cancelled
+          ? `<p class="muted">Refund will be sent to your original payment method. Questions? Message 0912 345 6789 with your booking ID.</p>`
+          : `<button type="button" class="cancel-btn" data-cancel="${r.id}">Cancel Reservation</button>`}`;
       list.appendChild(div);
     });
     list.addEventListener('click', (e) => {
+      const cp = e.target.closest('[data-copy]');
+      if (cp) {
+        const id = cp.getAttribute('data-copy');
+        const done = () => { cp.textContent = 'Copied ✓'; setTimeout(() => cp.textContent = 'Copy ID', 1500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(id).then(done).catch(done);
+        else done();
+        return;
+      }
       const btn = e.target.closest('[data-cancel]');
       if (!btn) return;
-      saveReservations(getReservations().filter(x => x.id !== btn.getAttribute('data-cancel')));
-      location.reload();
+      const id = btn.getAttribute('data-cancel');
+      confirmAction(
+        'Cancel this booking?',
+        'Your room is released and a refund goes to your original payment method.',
+        'Keep Booking',
+        'Yes, Cancel',
+        () => {
+          const rows = getReservations();
+          const row = rows.find(x => x.id === id);
+          if (row) row.status = 'Cancelled — refund pending';
+          saveReservations(rows);
+          location.reload();
+        }
+      );
+    });
+  }
+
+  function confirmAction(title, body, stayLabel, goLabel, proceed) {
+    // Generic themed confirm (same palette as logout confirm).
+    const old = document.getElementById('actionConfirm');
+    if (old) old.remove();
+    const back = document.createElement('div');
+    back.id = 'actionConfirm';
+    back.style.cssText = 'position:fixed;inset:0;background:rgba(40,80,50,0.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99;';
+    back.innerHTML = `<div style="background:#FFF8E7;border:1px solid #C5D4B8;border-radius:14px;max-width:360px;width:100%;padding:26px 24px;text-align:center;color:#333;font-family:inherit;">
+      <h3 style="color:#3F6B4F;margin:0 0 8px 0;"></h3>
+      <p style="margin:0 0 18px 0;"></p>
+      <div style="display:flex;gap:10px;">
+        <button type="button" id="actionStay" style="flex:1;padding:11px;border-radius:20px;border:1px solid #C5D4B8;background:white;color:#3F6B4F;font:inherit;font-weight:bold;cursor:pointer;"></button>
+        <button type="button" id="actionGo" style="flex:1;padding:11px;border-radius:20px;border:none;background:#a33d3d;color:white;font:inherit;font-weight:bold;cursor:pointer;"></button>
+      </div></div>`;
+    back.querySelector('h3').textContent = title;
+    back.querySelector('p').textContent = body;
+    back.querySelector('#actionStay').textContent = stayLabel;
+    back.querySelector('#actionGo').textContent = goLabel;
+    document.body.appendChild(back);
+    const cleanup = () => back.remove();
+    back.addEventListener('click', (e) => { if (e.target === back) cleanup(); });
+    document.getElementById('actionStay').addEventListener('click', cleanup);
+    document.getElementById('actionGo').addEventListener('click', () => { cleanup(); proceed(); });
+    document.addEventListener('keydown', function esc(e) {
+      if (e.key === 'Escape') { cleanup(); document.removeEventListener('keydown', esc); }
     });
   }
 
