@@ -790,7 +790,7 @@ nav a:hover {
 }
 
 /* Reserve modal as mini webpage: room panel + form */
-.modal-wide { max-width: 880px; padding: 0; overflow: hidden; }
+.modal-wide { max-width: 880px; padding: 0; overflow-y: auto; }
 .modal-grid { display: grid; grid-template-columns: 1fr 1.25fr; }
 .modal-room { background: #E8F0DF; padding: 26px 24px; }
 .modal-room img {
