@@ -290,6 +290,8 @@ nav a.active {
     margin: 0 -24px 18px -24px;
     border-radius: 12px 12px 0 0;
     background-color: #E8F0DF;
+    -webkit-mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
 }
 
 .room-card h3 {
