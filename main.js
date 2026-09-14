@@ -863,12 +863,98 @@
     }
   }
 
+  function initFeedbackWall() {
+    const wall = $('#reviewWall');
+    const modal = $('#feedbackModal');
+    const form = $('#quickFeedbackForm');
+    let stars = 5;
+
+    function readAll() {
+      try { return JSON.parse(localStorage.getItem('stella_feedback') || '[]'); }
+      catch { return []; }
+    }
+    function starNum(r) {
+      const m = String(r || '').match(/^[1-5]/);
+      return m ? Number(m[0]) : 5;
+    }
+    function render() {
+      if (!wall) return;
+      const all = readAll().slice().reverse().slice(0, 3);
+      const sum = $('#ratingSummary');
+      if (!all.length) {
+        if (sum) sum.textContent = 'No reviews yet — share the first one!';
+        wall.innerHTML = `<div class="review-empty">No guest reviews yet. Stayed with us? Tell future guests what to expect.</div>`;
+        return;
+      }
+      const full = readAll();
+      const avg = full.reduce((a, x) => a + starNum(x.r), 0) / full.length;
+      if (sum) sum.textContent = `★ ${avg.toFixed(1)} from ${full.length} review${full.length > 1 ? 's' : ''}`;
+      wall.innerHTML = '';
+      all.forEach(x => {
+        const n = starNum(x.r);
+        const div = document.createElement('div');
+        div.className = 'review-card';
+        div.innerHTML = `<div class="stars">${'★'.repeat(n)}${'☆'.repeat(5 - n)}</div><h3></h3><p></p>`;
+        div.querySelector('h3').textContent = x.n || 'Guest';
+        div.querySelector('p').textContent = x.t || '';
+        wall.appendChild(div);
+      });
+    }
+
+    function paintStars() {
+      document.querySelectorAll('#starPick button').forEach(b => {
+        b.classList.toggle('lit', Number(b.dataset.star) <= stars);
+      });
+    }
+    document.addEventListener('click', (e) => {
+      const s = e.target.closest('#starPick button');
+      if (s) { stars = Number(s.dataset.star); paintStars(); return; }
+      if (e.target.closest('[data-feedback]')) {
+        if (!modal) return;
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+        paintStars();
+        return;
+      }
+      if (modal && (e.target.closest('[data-close-feedback]') || e.target === modal)) {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.hidden) {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+      }
+    });
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const n = $('#qFbName').value.trim();
+        const t = $('#qFbText').value.trim();
+        if (!n || !t) return showMsg(form, 'Please add your name and review.', false);
+        const all = readAll();
+        all.push({ n, r: `${stars} - ${['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'][stars]}`, t, at: new Date().toISOString() });
+        localStorage.setItem('stella_feedback', JSON.stringify(all));
+        form.reset();
+        stars = 5;
+        paintStars();
+        render();
+        showMsg(form, 'Thanks! Your review is live below.', true);
+        setTimeout(() => { if (modal) { modal.hidden = true; document.body.style.overflow = ''; } }, 900);
+      });
+    }
+    render();
+    paintStars();
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     markActiveNav();
     initMobileNav();
     initAuthNav();
     initLoginModal();
     initRegisterModal();
+    initFeedbackWall();
     initSmoothScroll();
     initReveal();
     initQuickReserve();
