@@ -1,7 +1,16 @@
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
     background-color: #FFF8E7;
+    color: #333;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+    line-height: 1.25;
+    letter-spacing: 0.2px;
+    margin: 0 0 10px 0;
 }
 
 
@@ -151,6 +160,8 @@ nav a.active {
     color: #6F9E72;
     font-weight: bold;
     letter-spacing: 3px;
+    font-size: 13px;
+    margin: 0 0 8px 0;
 }
 
 
@@ -188,9 +199,11 @@ nav a.active {
     overflow: hidden;
 }
 
-.room-card h3 { font-size: 22px; }
-.room-card p { font-size: 16px; }
-.room-card strong { font-size: 17px; }
+.room-card h3 { font-size: 22px; margin: 12px 0 6px 0; }
+.room-card p { font-size: 15.5px; line-height: 1.55; margin: 6px 0; }
+.room-card strong { font-size: 17px; letter-spacing: 0.2px; }
+.room-card a { color: #3F6B4F; font-weight: 600; text-decoration: none; }
+.room-card a:hover { color: #527A57; text-decoration: underline; }
 
 .room-card img {
     width: calc(100% + 48px);
