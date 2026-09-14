@@ -102,12 +102,40 @@
     });
   }
 
+  function confirmLogout(proceed) {
+    // Themed confirm dialog (inline styles so it works on every page).
+    const old = document.getElementById('logoutConfirm');
+    if (old) old.remove();
+    const back = document.createElement('div');
+    back.id = 'logoutConfirm';
+    back.style.cssText = 'position:fixed;inset:0;background:rgba(40,80,50,0.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99;';
+    back.innerHTML = `<div style="background:#FFF8E7;border:1px solid #C5D4B8;border-radius:14px;max-width:360px;width:100%;padding:26px 24px;text-align:center;color:#333;font-family:inherit;">
+      <h3 style="color:#3F6B4F;margin:0 0 8px 0;">Log out?</h3>
+      <p style="margin:0 0 18px 0;">You'll stay on this device's guest bookings, but your account perks (prefill, private list) turn off.</p>
+      <div style="display:flex;gap:10px;">
+        <button type="button" id="logoutStay" style="flex:1;padding:11px;border-radius:20px;border:1px solid #C5D4B8;background:white;color:#3F6B4F;font:inherit;font-weight:bold;cursor:pointer;">Stay</button>
+        <button type="button" id="logoutGo" style="flex:1;padding:11px;border-radius:20px;border:none;background:#6F9E72;color:white;font:inherit;font-weight:bold;cursor:pointer;">Log out</button>
+      </div></div>`;
+    document.body.appendChild(back);
+    const cleanup = () => back.remove();
+    back.addEventListener('click', (e) => { if (e.target === back) cleanup(); });
+    document.getElementById('logoutStay').addEventListener('click', cleanup);
+    document.getElementById('logoutGo').addEventListener('click', () => { cleanup(); proceed(); });
+    document.addEventListener('keydown', function esc(e) {
+      if (e.key === 'Escape') { cleanup(); document.removeEventListener('keydown', esc); }
+    });
+  }
+
+  function doLogout() {
+    localStorage.removeItem('stella_session');
+    location.href = 'landingpage.html';
+  }
+
   function initLogout() {
     $$('[data-logout]').forEach(a => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
-        localStorage.removeItem('stella_session');
-        location.href = 'landingpage.html';
+        confirmLogout(doLogout);
       });
     });
   }
@@ -437,7 +465,7 @@
     document.querySelectorAll('nav a[href="register.html"]').forEach(a => {
       a.textContent = 'Logout';
       a.setAttribute('href', 'landingpage.html');
-      a.addEventListener('click', () => localStorage.removeItem('stella_session'));
+      a.addEventListener('click', (e) => { e.preventDefault(); confirmLogout(doLogout); });
     });
   }
 
