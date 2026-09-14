@@ -304,6 +304,7 @@
                 <p class="label">QUICK RESERVE</p>
                 <h2 id="modalTitle">Book Your Stay</h2>
                 <p class="muted">No account needed — we'll confirm via your email.</p>
+                <p class="muted" id="quickSessionNote" hidden></p>
                 <form id="quickReserveForm" novalidate>
                     <label for="qName">Full Name</label>
                     <input id="qName" type="text" placeholder="Enter your name" required autocomplete="name" />
@@ -330,9 +331,9 @@
                             <input id="qCheckout" type="date" required />
                         </div>
                     </div>
-                    <label for="qPay">Payment Method</label>
+                    <label for="qPay">Payment Preference (pay on arrival)</label>
                     <select id="qPay" required>
-                        <option value="">Select payment method</option>
+                        <option value="">Select payment preference</option>
                         <option>Card Payment</option>
                         <option>GCash</option>
                         <option>Bank Transfer</option>

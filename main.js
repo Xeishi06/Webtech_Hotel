@@ -190,7 +190,22 @@
   function initMyReservations() {
     const list = $('#reservationsList');
     if (!list) return;
-    const all = getReservations();
+    let all = getReservations();
+    const session = getSession();
+    if (session && session.email) {
+      const mine = all.filter(r => (r.by || r.email || '').toLowerCase() === session.email.toLowerCase());
+      if (mine.length) {
+        all = mine;
+      } else if (all.length) {
+        // Logged in but no bookings under this email: show nothing-new state
+        const note = document.createElement('p');
+        note.className = 'form-msg';
+        note.textContent = `No bookings yet under ${session.email}. Guest bookings on this device are hidden while logged in.`;
+        list.before(note);
+        list.innerHTML = '';
+        return;
+      }
+    }
     const params = new URLSearchParams(location.search);
     if (params.get('booked') === '1') {
       const ok = document.createElement('p');
@@ -331,6 +346,19 @@
           if (o.text.includes(want) || roomKey(o.text) === want) roomSel.selectedIndex = i;
         });
       }
+      // Prefill from login session (convenience, still optional)
+      try {
+        const s = getSession();
+        const users = getUsers();
+        const me = s ? users.find(u => u.email === s.email) : null;
+        const note = document.getElementById('quickSessionNote');
+        if (me) {
+          if (document.getElementById('qName') && !document.getElementById('qName').value) document.getElementById('qName').value = me.name || '';
+          if (document.getElementById('qEmail') && !document.getElementById('qEmail').value) document.getElementById('qEmail').value = me.email || '';
+          if (document.getElementById('qContact') && !document.getElementById('qContact').value && me.contact) document.getElementById('qContact').value = me.contact;
+          if (note) { note.hidden = false; note.textContent = `Booking as ${me.email} (logged in) — you can still edit.`; }
+        } else if (note) { note.hidden = true; }
+      } catch { /* guest mode */ }
       updateTotal();
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
