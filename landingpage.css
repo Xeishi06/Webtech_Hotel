@@ -698,7 +698,7 @@ section[id], footer[id] {
 .empty-state h2 { color: #3F6B4F; }
 
 /* Account page - same theme, smooth */
-.account-page { min-height: 60vh; background-color: #E8D5B5; }
+.account-page { min-height: 60vh; background-color: #FFF8E7; }
 .account-card {
     background: white;
     border: 1px solid #C5D4B8;
