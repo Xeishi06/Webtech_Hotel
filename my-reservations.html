@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Your bookings at Stella's Beach House" />
     <title>My Reservations - Stella's Beach House</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="landingpage.css">
 </head>
 
 <body>
@@ -14,33 +15,54 @@
 
     <h2>Stella's Beach House</h2>
 
+    <div>
     <a href="landingpage.html">Home</a>
-    <a href="rooms.html">Rooms</a>
+    <a href="landingpage.html#rooms">Rooms</a>
     <a href="landingpage.html#rooms">Reserve</a>
     <a href="my-reservations.html">My Reservations</a>
     <a href="account.html">My Account</a>
     <a href="feedback.html">Feedback</a>
     <a href="landingpage.html" data-logout>Logout</a>
+    </div>
 
 </nav>
 
-<div class="container container-wide">
+<section class="rooms bookings">
 
-    <h1>My Reservations</h1>
-    <p class="muted">Paid bookings, receipts, and cancellations — no login needed on this device.</p>
+    <p class="label">MY BOOKINGS</p>
 
-    <div id="reservationsList">
+    <h2>My Reservations</h2>
+
+    <p class="section-description">Paid bookings, receipts, and cancellations — no login needed on this device.</p>
+
+    <div id="reservationsList" class="booking-list">
     <div class="empty-state">
         <h2>No bookings yet</h2>
         <p>When you reserve a room, it will show up here with its receipt and booking ID.</p>
-        <p><a href="landingpage.html#rooms" class="btn-link">Browse rooms →</a></p>
+        <p><a href="landingpage.html#rooms" class="main-button" style="margin-top:10px;">Browse rooms</a></p>
     </div>
     </div>
 
-</div>
+</section>
 
 <footer>
-    <p>&copy; 2026 Stella's Beach House</p>
+
+    <h3>Stella's Beach House</h3>
+
+    <p>
+        Relax. Enjoy. Make Memories.
+    </p>
+
+    <p class="footer-links">
+        <a href="landingpage.html#home">Home</a> •
+        <a href="landingpage.html#rooms">Rooms</a> •
+        <a href="landingpage.html#contact">Contact</a>
+    </p>
+
+    <p>
+        &copy; 2026 Stella's Beach House
+    </p>
+
 </footer>
 
 <script src="main.js"></script>

@@ -570,6 +570,83 @@ nav a:hover {
 }
 .muted { color: #666; font-size: 13px; }
 .footer-links a { color: white; }
+
+/* Bookings list - same theme, smooth */
+.bookings { min-height: 60vh; }
+.booking-list {
+    max-width: 760px;
+    margin: 36px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    text-align: left;
+}
+.reservation-card {
+    background: white;
+    border: 1px solid #C5D4B8;
+    border-radius: 12px;
+    padding: 26px 24px;
+    animation: heroFadeUp 0.5s ease both;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.reservation-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(63, 107, 79, 0.18);
+    border-color: #6F9E72;
+}
+.booking-list .reservation-card:nth-child(2) { animation-delay: 0.06s; }
+.booking-list .reservation-card:nth-child(3) { animation-delay: 0.12s; }
+.booking-list .reservation-card:nth-child(4) { animation-delay: 0.18s; }
+.reservation-card h2 { color: #3F6B4F; }
+.reservation-card p { color: #555; }
+.reservation-card.cancelled { opacity: 0.75; }
+.status-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 12px;
+    background: #E8F0DF;
+    color: #3F6B4F;
+    border: 1px solid #6F9E72;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+.status-badge.cancelled { background: #fdecea; color: #7a2e2e; border-color: #e0a8a8; }
+.id-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.copy-btn {
+    background: #E8D5B5;
+    color: #3F6B4F;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+.copy-btn:hover { background: #D8C39E; }
+.cancel-btn {
+    background: #a33d3d;
+    color: white;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 20px;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.cancel-btn:hover { background: #7f2d2d; transform: translateY(-1px); }
+.empty-state {
+    background: white;
+    border: 1px dashed #C5D4B8;
+    border-radius: 12px;
+    padding: 36px 28px;
+    text-align: center;
+    color: #3F6B4F;
+}
+.empty-state h2 { color: #3F6B4F; }
 .footer-stay { margin: 4px; font-size: 14px; }
 .muted-light { opacity: 0.85; font-size: 13px; }
 
