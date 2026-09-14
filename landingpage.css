@@ -72,6 +72,16 @@ nav h2 {
 .stella-nav .nav-link { color: white; }
 .stella-nav .nav-link:hover, .stella-nav .nav-link:focus { color: white; }
 .stella-nav .register-button { margin: 4px 0 4px 8px; }
+@media (max-width: 1199.98px) {
+    .stella-nav .navbar-collapse { text-align: center; padding: 8px 0 12px 0; }
+    .stella-nav .nav-link { display: inline-block; }
+    .stella-nav .register-button {
+        display: block;
+        margin: 10px auto 4px auto;
+        max-width: 260px;
+        text-align: center;
+    }
+}
 
 nav a {
     color: white;
