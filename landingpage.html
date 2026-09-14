@@ -109,7 +109,7 @@
                 <h3>Couples Room</h3>
                 <p>Good for 2 persons</p>
                 <strong>₱2,000 per night</strong>
-                <p class="card-links"><a class="reserve-pill" href="reservation.html?room=Couples%20Room">Reserve →</a><a class="details-link" href="rooms.html">Details →</a></p>
+                <p class="card-links"><button type="button" class="reserve-pill" data-reserve="Couples%20Room">Reserve →</button><a class="details-link" href="rooms.html">Details →</a></p>
             </div>
 
             <div class="room-card">
@@ -118,7 +118,7 @@
                 <h3>Family Room 4</h3>
                 <p>Good for 4 persons</p>
                 <strong>₱2,500 per night</strong>
-                <p class="card-links"><a class="reserve-pill" href="reservation.html?room=Family%20Room%204">Reserve →</a><a class="details-link" href="rooms.html">Details →</a></p>
+                <p class="card-links"><button type="button" class="reserve-pill" data-reserve="Family%20Room%204">Reserve →</button><a class="details-link" href="rooms.html">Details →</a></p>
             </div>
 
             <div class="room-card">
@@ -127,7 +127,7 @@
                 <h3>Family Room 6</h3>
                 <p>Good for 6 persons</p>
                 <strong>₱3,000 per night</strong>
-                <p class="card-links"><a class="reserve-pill" href="reservation.html?room=Family%20Room%206">Reserve →</a><a class="details-link" href="rooms.html">Details →</a></p>
+                <p class="card-links"><button type="button" class="reserve-pill" data-reserve="Family%20Room%206">Reserve →</button><a class="details-link" href="rooms.html">Details →</a></p>
             </div>
 
             <div class="room-card">
@@ -136,7 +136,7 @@
                 <h3>Family Room 12</h3>
                 <p>Good for 12 persons</p>
                 <strong>₱4,500 per night</strong>
-                <p class="card-links"><a class="reserve-pill" href="reservation.html?room=Family%20Room%2012">Reserve →</a><a class="details-link" href="rooms.html">Details →</a></p>
+                <p class="card-links"><button type="button" class="reserve-pill" data-reserve="Family%20Room%2012">Reserve →</button><a class="details-link" href="rooms.html">Details →</a></p>
             </div>
 
             <div class="room-card">
@@ -145,7 +145,7 @@
                 <h3>Family Room 15</h3>
                 <p>Good for 15 persons</p>
                 <strong>₱7,000 per night</strong>
-                <p class="card-links"><a class="reserve-pill" href="reservation.html?room=Family%20Room%2015">Reserve →</a><a class="details-link" href="rooms.html">Details →</a></p>
+                <p class="card-links"><button type="button" class="reserve-pill" data-reserve="Family%20Room%2015">Reserve →</button><a class="details-link" href="rooms.html">Details →</a></p>
             </div>
 
             <div class="room-card cta-card">
@@ -157,9 +157,9 @@
 
         </div>
 
-        <a href="register.html" class="main-button">
-            Create an Account to Reserve
-        </a>
+        <button type="button" class="main-button" data-reserve="">
+            Book Now — No Account Needed
+        </button>
         <p><a href="rooms.html" class="rooms-link">View all rooms with details →</a></p>
 
     </section>
@@ -206,8 +206,8 @@
                 <h3>Easy Reservation</h3>
 
                 <p>
-                    Create an account and easily manage
-                    your reservations.
+                    Reserve as a guest with just your email —
+                    no account needed.
                 </p>
 
             </div>
@@ -295,6 +295,61 @@
         </p>
 
     </footer>
+
+    <!-- QUICK RESERVE MODAL (guest, no account needed) -->
+    <div class="modal-backdrop" id="reserveModal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+            <div id="modalFormView">
+                <p class="label">QUICK RESERVE</p>
+                <h2 id="modalTitle">Book Your Stay</h2>
+                <p class="muted">No account needed — we'll confirm via your email.</p>
+                <form id="quickReserveForm" novalidate>
+                    <label for="qName">Full Name</label>
+                    <input id="qName" type="text" placeholder="Enter your name" required autocomplete="name" />
+                    <label for="qEmail">Gmail / Email</label>
+                    <input id="qEmail" type="email" placeholder="you@gmail.com" required autocomplete="email" />
+                    <label for="qContact">Contact Number</label>
+                    <input id="qContact" type="tel" pattern="09[0-9]{9}" maxlength="11" placeholder="09XXXXXXXXX" required />
+                    <label for="qRoom">Room Type</label>
+                    <select id="qRoom" required>
+                        <option value="">Select a room</option>
+                        <option>Couples Room - ₱2,000</option>
+                        <option>Family Room 4 - ₱2,500</option>
+                        <option>Family Room 6 - ₱3,000</option>
+                        <option>Family Room 12 - ₱4,500</option>
+                        <option>Family Room 15 - ₱7,000</option>
+                    </select>
+                    <div class="modal-row">
+                        <div>
+                            <label for="qCheckin">Check-in</label>
+                            <input id="qCheckin" type="date" required />
+                        </div>
+                        <div>
+                            <label for="qCheckout">Check-out</label>
+                            <input id="qCheckout" type="date" required />
+                        </div>
+                    </div>
+                    <label for="qPay">Payment Method</label>
+                    <select id="qPay" required>
+                        <option value="">Select payment method</option>
+                        <option>Card Payment</option>
+                        <option>GCash</option>
+                        <option>Bank Transfer</option>
+                    </select>
+                    <div id="quickTotal" aria-live="polite">Select a room and valid dates to see your total.</div>
+                    <button type="submit" class="main-button modal-submit">Confirm Reservation</button>
+                </form>
+            </div>
+            <div id="modalDoneView" hidden>
+                <p class="label">RESERVED ✓</p>
+                <h2>You're Booked!</h2>
+                <p id="modalDoneText">Confirmation sent to your email.</p>
+                <p><strong>Booking ID:</strong> <span id="modalBookingId"></span></p>
+                <button type="button" class="main-button" data-close>Done</button>
+            </div>
+        </div>
+    </div>
 
     <script src="main.js"></script>
 </body>

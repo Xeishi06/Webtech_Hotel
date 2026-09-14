@@ -294,11 +294,109 @@
     els.forEach(el => io.observe(el));
   }
 
+  function initQuickReserve() {
+    const modal = $('#reserveModal');
+    if (!modal) return;
+    const form = $('#quickReserveForm');
+    const roomSel = $('#qRoom'), cin = $('#qCheckin'), cout = $('#qCheckout');
+    const total = $('#quickTotal');
+    const formView = $('#modalFormView'), doneView = $('#modalDoneView');
+
+    const today = new Date().toISOString().split('T')[0];
+    if (cin) cin.min = today;
+    if (cout) cout.min = today;
+
+    function roomKey(opt) { return (opt || '').split(' - ')[0].trim(); }
+    function nights() { return calcNights(cin.value, cout.value); }
+
+    function updateTotal() {
+      if (!total) return;
+      const room = roomSel ? roomKey(roomSel.options[roomSel.selectedIndex].text) : '';
+      const price = PRICES[room] || 0;
+      const n = nights();
+      if (!price || n <= 0) {
+        total.textContent = 'Select a room and valid dates to see your total.';
+        return;
+      }
+      total.innerHTML = `<strong>${room}</strong> × ${n} night${n > 1 ? 's' : ''} = <strong>${peso(price * n)}</strong>`;
+    }
+    [roomSel, cin, cout].forEach(el => el && el.addEventListener('change', updateTotal));
+
+    function open(room) {
+      if (formView) formView.hidden = false;
+      if (doneView) doneView.hidden = true;
+      if (room && roomSel) {
+        const want = decodeURIComponent(room);
+        Array.from(roomSel.options).forEach((o, i) => {
+          if (o.text.includes(want) || roomKey(o.text) === want) roomSel.selectedIndex = i;
+        });
+      }
+      updateTotal();
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-reserve]');
+      if (t) { open(t.getAttribute('data-reserve') || ''); return; }
+      if (e.target.closest('[data-close]') || e.target === modal) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) close();
+    });
+
+    // Support landingpage.html?reserve=Family%20Room%206 (for rooms.html links)
+    const params = new URLSearchParams(location.search);
+    if (params.get('reserve') !== null) open(params.get('reserve') || '');
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = $('#qName').value.trim();
+        const email = $('#qEmail').value.trim();
+        const contact = $('#qContact').value.trim();
+        const roomOpt = roomSel.options[roomSel.selectedIndex].text;
+        const room = roomKey(roomOpt);
+        const n = nights();
+        if (!name) return showMsg(form, 'Please enter your full name.', false);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showMsg(form, 'Enter a valid email for confirmation.', false);
+        if (!/^09\d{9}$/.test(contact)) return showMsg(form, 'Contact must be 11 digits starting with 09.', false);
+        if (!PRICES[room]) return showMsg(form, 'Please select a room.', false);
+        if (n <= 0) return showMsg(form, 'Check-out must be after check-in.', false);
+        const all = getReservations();
+        const booking = {
+          id: 'ST-' + Date.now().toString(36).toUpperCase(),
+          name, email, contact, room,
+          checkin: cin.value, checkout: cout.value,
+          nights: n, total: PRICES[room] * n,
+          payment: $('#qPay') ? $('#qPay').value : '',
+          status: 'Confirmed (guest)',
+          by: email,
+          created: new Date().toISOString()
+        };
+        all.push(booking);
+        saveReservations(all);
+        if (formView) formView.hidden = true;
+        if (doneView) doneView.hidden = false;
+        const dt = $('#modalDoneText');
+        if (dt) dt.textContent = `Confirmation will be sent to ${email}. Show this ID at check-in.`;
+        const bid = $('#modalBookingId');
+        if (bid) bid.textContent = booking.id;
+        form.reset();
+      });
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     markActiveNav();
     initMobileNav();
     initSmoothScroll();
     initReveal();
+    initQuickReserve();
     initRegister();
     initLogin();
     initLogout();
