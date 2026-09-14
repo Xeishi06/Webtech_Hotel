@@ -48,6 +48,30 @@ nav h2 {
     margin-right: 10px;
     background: white;
 }
+.stella-nav .navbar-brand {
+    color: white;
+    font-weight: bold;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+}
+.stella-nav .navbar-brand:hover, .stella-nav .navbar-brand:focus { color: white; }
+.stella-nav .navbar-toggler {
+    background: #E8D5B5;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+}
+.stella-nav .navbar-toggler:focus { box-shadow: 0 0 0 2px #E8D5B5; }
+.stella-nav .navbar-toggler-icon {
+    background-size: 60%;
+    filter: brightness(0) saturate(100%) invert(32%) sepia(38%) saturate(545%) hue-rotate(89deg) brightness(92%) contrast(92%);
+}
+.stella-nav .nav-link { color: white; }
+.stella-nav .nav-link:hover, .stella-nav .nav-link:focus { color: white; }
+.stella-nav .register-button { margin: 4px 0 4px 8px; }
 
 nav a {
     color: white;
@@ -1132,9 +1156,9 @@ section[id], footer[id] {
         border-radius: 50%;
         margin-left: auto;
     }
-    nav div { display: none; flex-basis: 100%; width: 100%; text-align: center; }
-    nav.open div { display: block; }
-    nav div a { display: inline-block; margin: 5px 3px; }
+    nav:not(.stella-nav) div { display: none; flex-basis: 100%; width: 100%; text-align: center; }
+    nav:not(.stella-nav).open div { display: block; }
+    nav:not(.stella-nav) div a { display: inline-block; margin: 5px 3px; }
 }
 @media (max-width: 800px) {
     .hero-stats { gap: 16px; }
@@ -1164,8 +1188,8 @@ section[id], footer[id] {
         border-radius: 50%;
         margin-left: auto;
     }
-    nav div { display: none; flex-basis: 100%; width: 100%; text-align: center; }
-    nav.open div { display: block; }
+    nav:not(.stella-nav) div { display: none; width: 100%; text-align: center; }
+    nav:not(.stella-nav).open div { display: block; }
 
     nav div a {
         display: inline-block;

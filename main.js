@@ -42,7 +42,7 @@
 
   function initMobileNav() {
     const nav = $('nav');
-    if (!nav || $('.nav-toggle')) return;
+    if (!nav || $('.nav-toggle') || nav.querySelector('.navbar-toggler')) return;
     const firstLink = $('nav a');
     if (!firstLink) return;
     const btn = document.createElement('button');
