@@ -594,6 +594,7 @@ nav a:hover {
     border-radius: 12px;
     padding: 24px 22px;
     width: 300px;
+    max-width: 100%;
     box-sizing: border-box;
     text-align: left;
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
@@ -876,6 +877,10 @@ nav a:hover {
 @media (max-width: 760px) {
     .modal-grid { grid-template-columns: 1fr; }
     .modal-room img { height: 170px; }
+    .modal { max-height: 92vh; }
+    .modal-row { flex-wrap: wrap; }
+    .modal-row > div { flex: 1 1 140px; }
+    .feature-card, .contact-info div { max-width: 100%; }
 }
 /* 3x2 grid: 3 cols desktop, 2 cols tablet, 1 col mobile */
 @media (max-width: 1000px) {
