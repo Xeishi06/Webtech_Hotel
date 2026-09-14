@@ -104,7 +104,11 @@
 
   function initLogout() {
     $$('[data-logout]').forEach(a => {
-      a.addEventListener('click', () => localStorage.removeItem('stella_session'));
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('stella_session');
+        location.href = 'landingpage.html';
+      });
     });
   }
 
@@ -432,7 +436,7 @@
     });
     document.querySelectorAll('nav a[href="register.html"]').forEach(a => {
       a.textContent = 'Logout';
-      a.setAttribute('href', 'login.html');
+      a.setAttribute('href', 'landingpage.html');
       a.addEventListener('click', () => localStorage.removeItem('stella_session'));
     });
   }
