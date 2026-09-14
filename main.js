@@ -263,7 +263,20 @@
         <p><strong>Payment:</strong> ${r.payment || '-'}${r.ref ? ' • Ref ' + r.ref : ''}</p>
         ${cancelled
           ? `<p class="muted">Refund will be sent to your original payment method. Questions? Message 0912 345 6789 with your booking ID.</p>`
-          : `<button type="button" class="cancel-btn" data-cancel="${r.id}">Cancel Reservation</button>`}`;
+          : `<div class="card-actions"><button type="button" class="edit-btn" data-edit="${r.id}">Edit</button><button type="button" class="cancel-btn" data-cancel="${r.id}">Cancel Reservation</button></div>
+             <form class="edit-form" data-editform="${r.id}" hidden>
+               <div class="modal-row">
+                 <div><label>Full Name</label><input data-f="name" type="text" value="" /></div>
+                 <div><label>Contact</label><input data-f="contact" type="tel" maxlength="11" value="" /></div>
+               </div>
+               <div><label>Email</label><input data-f="email" type="email" value="" /></div>
+               <div class="modal-row">
+                 <div><label>Check-in</label><input data-f="checkin" type="date" value="${r.checkin || ''}" /></div>
+                 <div><label>Check-out</label><input data-f="checkout" type="date" value="${r.checkout || ''}" /></div>
+               </div>
+               <p class="muted">Room changes need cancel + rebook. Date changes re-check availability and adjust totals.</p>
+               <div class="card-actions"><button type="button" data-save="${r.id}">Save Changes</button></div>
+             </form>`}`;
       list.appendChild(div);
     });
     list.addEventListener('click', (e) => {
@@ -273,6 +286,59 @@
         const done = () => { cp.textContent = 'Copied ✓'; setTimeout(() => cp.textContent = 'Copy ID', 1500); };
         if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(id).then(done).catch(done);
         else done();
+        return;
+      }
+      const ed = e.target.closest('[data-edit]');
+      if (ed) {
+        const id = ed.getAttribute('data-edit');
+        const rows = getReservations();
+        const row = rows.find(x => x.id === id);
+        const f = list.querySelector(`[data-editform="${id}"]`);
+        if (row && f) {
+          if (f.hidden) {
+            f.querySelector('[data-f="name"]').value = row.name || '';
+            f.querySelector('[data-f="contact"]').value = row.contact || '';
+            f.querySelector('[data-f="email"]').value = row.email || row.by || '';
+            f.hidden = false;
+            ed.textContent = 'Close Editor';
+          } else {
+            f.hidden = true;
+            ed.textContent = 'Edit';
+          }
+        }
+        return;
+      }
+      const sv = e.target.closest('[data-save]');
+      if (sv) {
+        const id = sv.getAttribute('data-save');
+        const rows = getReservations();
+        const row = rows.find(x => x.id === id);
+        const f = list.querySelector(`[data-editform="${id}"]`);
+        if (!row || !f) return;
+        const v = (k) => (f.querySelector(`[data-f="${k}"]`).value || '').trim();
+        const name = v('name'), email = v('email'), contact = v('contact');
+        const cinV = v('checkin'), coutV = v('checkout');
+        if (!name) return alert('Please enter the guest name.');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert('Enter a valid email.');
+        if (!/^09\d{9}$/.test(contact)) return alert('Contact must be 11 digits starting with 09.');
+        if (!cinV || !coutV || !(new Date(coutV) > new Date(cinV))) return alert('Check-out must be after check-in.');
+        const clash = rows.find(x =>
+          x.id !== id && x.room === row.room && x.checkin && x.checkout &&
+          !(String(x.status || '').toLowerCase().startsWith('cancelled')) &&
+          new Date(cinV) < new Date(x.checkout) && new Date(x.checkin) < new Date(coutV));
+        if (clash) return alert(`${row.room} is already booked ${fmtLong(clash.checkin)} → ${fmtLong(clash.checkout)}.`);
+        row.name = name; row.email = email; row.by = email; row.contact = contact;
+        row.checkin = cinV; row.checkout = coutV;
+        const n = Math.round((new Date(coutV) - new Date(cinV)) / 86400000);
+        const rate = n > 0 && row.total && row.nights ? Math.round(row.total / row.nights) : 0;
+        row.nights = n;
+        if (rate) {
+          row.total = rate * n;
+          row.deposit = Math.round(row.total / 2);
+          row.balance = row.total - row.deposit;
+        }
+        saveReservations(rows);
+        location.reload();
         return;
       }
       const btn = e.target.closest('[data-cancel]');

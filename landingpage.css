@@ -638,6 +638,51 @@ nav a:hover {
     transition: background-color 0.25s ease, transform 0.25s ease;
 }
 .cancel-btn:hover { background: #7f2d2d; transform: translateY(-1px); }
+.card-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.edit-btn {
+    background: #E8D5B5;
+    color: #3F6B4F;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 20px;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.edit-btn:hover { background: #D8C39E; transform: translateY(-1px); }
+.edit-form {
+    margin-top: 14px;
+    padding: 16px;
+    background: #FFF8E7;
+    border: 1px dashed #C5D4B8;
+    border-radius: 8px;
+}
+.edit-form[hidden] { display: none; }
+.edit-form label { display: block; margin-top: 10px; font-weight: bold; color: #3F6B4F; font-size: 14px; }
+.edit-form input {
+    width: 100%;
+    padding: 9px 10px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    border: 1px solid #C5D4B8;
+    border-radius: 6px;
+    font: inherit;
+    background: white;
+}
+.edit-form .modal-row { display: flex; gap: 12px; }
+.edit-form .modal-row > div { flex: 1; }
+.edit-form button[data-save] {
+    background: #6F9E72;
+    color: white;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 20px;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+.edit-form button[data-save]:hover { background: #527A57; }
 .empty-state {
     background: white;
     border: 1px dashed #C5D4B8;
