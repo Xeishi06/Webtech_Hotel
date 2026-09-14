@@ -388,6 +388,9 @@ footer {
 footer p {
     margin: 7px;
 }
+footer.footer-compact { padding: 16px 12px; }
+footer.footer-compact h3 { font-size: 16px; margin: 0 0 4px 0; }
+footer.footer-compact p { margin: 3px; font-size: 13px; }
 
 /* Smooth UI - same palette, motion only */
 html {
