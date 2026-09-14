@@ -875,6 +875,13 @@ section[id], footer[id] {
     z-index: 50;
     animation: backdropFade 0.3s ease both;
 }
+.modal-backdrop .modal {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.modal-backdrop .modal.modal-wide { overflow-y: auto; }
 @keyframes backdropFade {
     from { opacity: 0; }
     to { opacity: 1; }
