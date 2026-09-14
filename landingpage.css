@@ -236,6 +236,10 @@ nav a.active {
 }
 .details-link {
     display: inline-block;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
     transition: transform 0.25s ease, color 0.25s ease;
 }
 .details-link:hover {
@@ -449,31 +453,6 @@ nav a:hover {
     font-weight: bold;
     margin: 12px 0 0 0;
 }
-.avail-bar {
-    display: flex;
-    gap: 10px;
-    align-items: flex-end;
-    justify-content: center;
-    flex-wrap: wrap;
-    background: rgba(255, 248, 231, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin: 20px auto 0 auto;
-    max-width: 640px;
-}
-.avail-bar > div { display: flex; flex-direction: column; text-align: left; }
-.avail-bar label { font-size: 12px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; }
-.avail-bar input, .avail-bar select {
-    padding: 9px 10px;
-    border-radius: 6px;
-    border: 1px solid #C5D4B8;
-    font: inherit;
-    color: #333;
-    background: white;
-}
-.avail-bar .main-button { border: none; cursor: pointer; font: inherit; margin: 0; }
-.avail-hint { min-height: 22px; font-size: 14px; font-weight: bold; margin: 8px 0 0 0; }
 .room-card.flash {
     outline: 3px solid #E8D5B5;
     outline-offset: 3px;

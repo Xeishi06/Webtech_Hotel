@@ -634,14 +634,6 @@
     function open(room) {
       if (formView) formView.hidden = false;
       if (doneView) doneView.hidden = true;
-      // Carry hero availability dates into the booking form
-      try {
-        const sq = JSON.parse(localStorage.getItem('stella_search') || 'null');
-        if (sq) {
-          if (cin && !cin.value && sq.cin) cin.value = sq.cin;
-          if (cout && !cout.value && sq.cout) cout.value = sq.cout;
-        }
-      } catch { /* ignore */ }
       if (room && roomSel) {
         const want = decodeURIComponent(room);
         Array.from(roomSel.options).forEach((o, i) => {
@@ -967,41 +959,6 @@
     paintStars();
   }
 
-  function initAvail() {
-    const bar = $('#availBar');
-    if (!bar) return;
-    const ain = $('#avIn'), aout = $('#avOut');
-    const today = new Date().toISOString().split('T')[0];
-    if (ain) ain.min = today;
-    if (aout) aout.min = today;
-    const CAPS = [2, 4, 6, 12, 15];
-    bar.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const hint = $('#availHint');
-      if (!ain.value || !aout.value || new Date(aout.value) <= new Date(ain.value)) {
-        if (hint) hint.textContent = 'Pick a check-out date after check-in.';
-        return;
-      }
-      const g = Number($('#avGuests').value || 2);
-      try { localStorage.setItem('stella_search', JSON.stringify({ cin: ain.value, cout: aout.value, guests: g })); } catch { /* ignore */ }
-      const cards = Array.from(document.querySelectorAll('#rooms .room-card:not(.cta-card)'));
-      cards.forEach(c => c.classList.remove('flash'));
-      const idx = CAPS.findIndex(c => c >= g);
-      const names = ['Couples Room', 'Family Room 4', 'Family Room 6', 'Family Room 12', 'Family Room 15'];
-      if (idx >= 0 && cards[idx]) {
-        cards[idx].classList.add('flash');
-        setTimeout(() => cards[idx].classList.remove('flash'), 3500);
-        if (hint) hint.textContent = `${names[idx]} fits ${g} — see options below. Dates saved to booking.`;
-      } else if (hint) hint.textContent = 'For 15+ guests, see “Need something bigger?” below.';
-      const target = document.querySelector('#rooms');
-      if (target) {
-        const nav = document.querySelector('nav');
-        const off = (nav ? nav.offsetHeight : 70) + 12;
-        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - off, behavior: 'smooth' });
-      }
-    });
-  }
-
   function initFocusTrap() {
     // Keep Tab cycling inside the open modal (keyboard + screen readers).
     document.addEventListener('keydown', (e) => {
@@ -1024,7 +981,6 @@
     initFocusTrap();
     initLoginModal();
     initRegisterModal();
-    initAvail();
     initFeedbackWall();
     initSmoothScroll();
     initReveal();
