@@ -518,6 +518,25 @@
     function overlaps(a1, b1, a2, b2) {
       return new Date(a1) < new Date(b2) && new Date(a2) < new Date(b1);
     }
+    function fmt(d) { return d.toISOString().split('T')[0]; }
+    function addDays(iso, n) {
+      const d = new Date(iso);
+      d.setDate(d.getDate() + n);
+      return fmt(d);
+    }
+    function nextFree(room, n, from) {
+      const mine = getReservations()
+        .filter(r => r.room === room && r.checkin && r.checkout)
+        .sort((a, b) => new Date(a.checkin) - new Date(b.checkin));
+      let start = from;
+      for (let k = 0; k < 365; k++) {
+        const end = addDays(start, n);
+        const clash = mine.find(r => overlaps(start, end, r.checkin, r.checkout));
+        if (!clash) return { start, end };
+        start = clash.checkout; // checkout day itself is free
+      }
+      return null;
+    }
 
     let galPhotos = ['scene.jpg'];
     let galIdx = 0;
@@ -613,6 +632,15 @@
     document.addEventListener('click', (e) => {
       const pm = e.target.closest('.pay-method');
       if (pm && modal && !modal.hidden) setPayMethod(pm.dataset.pay);
+      const ua = e.target.closest('#useAltDates');
+      if (ua && modal && !modal.hidden) {
+        if (cin) cin.value = ua.dataset.cin;
+        if (cout) cout.value = ua.dataset.cout;
+        resetAvailStep();
+        updateTotal();
+        const cb = $('#checkAvail');
+        if (cb) cb.click();
+      }
     });
 
     function gotoStep(n) {
@@ -635,7 +663,10 @@
       const clash = getReservations().find(r =>
         r.room === room && r.checkin && r.checkout &&
         overlaps(cin.value, cout.value, r.checkin, r.checkout));
-      if (clash) return { err: `${room} is already booked ${clash.checkin} → ${clash.checkout}. Pick other dates.` };
+      if (clash) {
+        const alt = nextFree(room, n, cin.value);
+        return { err: `${room} is already booked ${clash.checkin} → ${clash.checkout}.`, alt };
+      }
       return { room, n, full: price * n, dep: Math.round(price * n / 2) };
     }
 
@@ -708,7 +739,15 @@
         return;
       }
       const sel = dateSelection();
-      if (sel.err) return showMsg(form, sel.err, false);
+      if (sel.err) {
+        const ar = $('#availResult');
+        if (ar) {
+          ar.innerHTML = `✕ ${sel.err}` + (sel.alt
+            ? `<br />Next free for ${sel.n || nights()} night(s): <strong>${sel.alt.start} → ${sel.alt.end}</strong> <button type="button" class="details-link" id="useAltDates" data-cin="${sel.alt.start}" data-cout="${sel.alt.end}">Use these dates →</button>`
+            : '');
+        }
+        return showMsg(form, sel.err, false);
+      }
       const old = form.querySelector('.form-msg');
       if (old) old.remove();
       const ar = $('#availResult');
