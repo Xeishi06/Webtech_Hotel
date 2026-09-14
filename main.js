@@ -358,6 +358,7 @@
             <aside class="modal-room">
                 <div class="gallery-main">
                     <img id="mRoomImg" src="scene.jpg" alt="Selected room" />
+                    <span class="photo-count" id="photoCount">1 / 3</span>
                     <button type="button" class="gal-arrow left" id="galPrev" aria-label="Previous photo">‹</button>
                     <button type="button" class="gal-arrow right" id="galNext" aria-label="Next photo">›</button>
                 </div>
@@ -560,6 +561,8 @@
         img.onerror = () => { img.src = 'scene.jpg'; };
       }
       if (thumbs) thumbs.querySelectorAll('img').forEach((x, xi) => x.classList.toggle('active', xi === galIdx));
+      const pc = document.getElementById('photoCount');
+      if (pc) pc.textContent = `${galIdx + 1} / ${galPhotos.length}`;
     }
 
     function fillPanel(room) {
