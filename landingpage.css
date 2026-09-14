@@ -900,6 +900,8 @@ section[id], footer[id] {
     margin: -28px -26px 18px -26px;
     background: url("scene.jpg") center / cover;
     border-radius: 14px 14px 0 0;
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
 }
 #quickTotal {
     margin-top: 14px;
