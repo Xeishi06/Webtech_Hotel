@@ -21,7 +21,7 @@
             <a href="#about">About</a>
             <a href="#rooms">Rooms</a>
             <a href="#contact">Contact</a>
-            <a href="login.html">Login</a>
+            <a href="login.html" data-login>Login</a>
             <a href="register.html" class="register-button">
                 Create Account
             </a>
@@ -349,6 +349,23 @@
                 <p><strong>Booking ID:</strong> <span id="modalBookingId"></span></p>
                 <button type="button" class="main-button" data-close>Done</button>
             </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL (pages still work as fallback) -->
+    <div class="modal-backdrop" id="loginModal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+            <button type="button" class="modal-close" data-close-login aria-label="Close">×</button>
+            <p class="label">WELCOME BACK</p>
+            <h2 id="loginTitle">Customer Login</h2>
+            <form id="quickLoginForm" novalidate>
+                <label for="qLoginEmail">Email</label>
+                <input id="qLoginEmail" type="email" placeholder="Enter your email" required autocomplete="email" />
+                <label for="qLoginPassword">Password</label>
+                <input id="qLoginPassword" type="password" placeholder="Enter your password" required autocomplete="current-password" />
+                <button type="submit" class="main-button modal-submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="register.html">Create an account</a></p>
         </div>
     </div>
 

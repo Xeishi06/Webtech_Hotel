@@ -469,10 +469,53 @@
     });
   }
 
+  function initLoginModal() {
+    const modal = $('#loginModal');
+    if (!modal) return;
+    const form = $('#quickLoginForm');
+    function open() {
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      const em = $('#qLoginEmail');
+      if (em) em.focus();
+    }
+    function close() {
+      modal.hidden = true;
+      if ($('#reserveModal') && $('#reserveModal').hidden) document.body.style.overflow = '';
+    }
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-login]');
+      if (t) {
+        if (getSession()) return; // initAuthNav already swapped it
+        e.preventDefault();
+        open();
+        return;
+      }
+      if (e.target.closest('[data-close-login]') || e.target === modal) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) close();
+    });
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = $('#qLoginEmail').value.trim().toLowerCase();
+        const pw = $('#qLoginPassword').value;
+        const found = getUsers().find(u => u.email === email && u.pw === pw);
+        if (!found) return showMsg(form, 'Invalid email or password. Register first if you are new.', false);
+        setSession({ name: found.name, email: found.email });
+        showMsg(form, 'Welcome back, ' + found.name + '!', true);
+        initAuthNav();
+        setTimeout(close, 700);
+      });
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     markActiveNav();
     initMobileNav();
     initAuthNav();
+    initLoginModal();
     initSmoothScroll();
     initReveal();
     initQuickReserve();
