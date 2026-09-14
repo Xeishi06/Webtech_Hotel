@@ -718,6 +718,33 @@ nav a:hover {
     border-radius: 6px;
     color: #3F6B4F;
 }
+#availResult.ok { border-style: solid; border-color: #6F9E72; background: #E8F0DF; }
+#availResult.bad { border-style: solid; border-color: #e0a8a8; background: #fdecea; color: #7a2e2e; }
+.alt-suggest {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: #FFF8E7;
+    border: 1px solid #C5D4B8;
+    border-radius: 8px;
+    color: #3F6B4F;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+#useAltDates {
+    background: #6F9E72;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 9px 18px;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+}
+#useAltDates:hover { background: #527A57; }
 .success-line {
     padding: 10px 12px;
     background: #E8F0DF;

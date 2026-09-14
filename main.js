@@ -613,7 +613,7 @@
       const btn = $('#checkAvail');
       if (btn) { btn.textContent = 'Check Availability →'; btn.dataset.checked = ''; }
       const ar = $('#availResult');
-      if (ar) ar.textContent = 'Pick a room and dates, then check availability.';
+      if (ar) { ar.className = ''; ar.textContent = 'Pick a room and dates, then check availability.'; }
     }
 
     let payMethod = 'GCash';
@@ -742,16 +742,22 @@
       if (sel.err) {
         const ar = $('#availResult');
         if (ar) {
-          ar.innerHTML = `✕ ${sel.err}` + (sel.alt
-            ? `<br />Next free for ${sel.n || nights()} night(s): <strong>${sel.alt.start} → ${sel.alt.end}</strong> <button type="button" class="details-link" id="useAltDates" data-cin="${sel.alt.start}" data-cout="${sel.alt.end}">Use these dates →</button>`
+          ar.className = 'bad';
+          ar.innerHTML = `<strong>Those dates are taken.</strong><br />${sel.err}` + (sel.alt
+            ? `<div class="alt-suggest"><span>Next free for ${nights()} night(s):<br /><strong>${sel.alt.start} → ${sel.alt.end}</strong></span><button type="button" id="useAltDates" data-cin="${sel.alt.start}" data-cout="${sel.alt.end}">Use these dates</button></div>`
             : '');
         }
-        return showMsg(form, sel.err, false);
+        const old = form.querySelector('.form-msg');
+        if (old) old.remove();
+        return;
       }
       const old = form.querySelector('.form-msg');
       if (old) old.remove();
       const ar = $('#availResult');
-      if (ar) ar.innerHTML = `✓ <strong>Available!</strong> ${sel.room} × ${sel.n} night${sel.n > 1 ? 's' : ''} = <strong>${peso(sel.full)}</strong> <span class="muted">(${peso(sel.dep)} deposit due now)</span>`;
+      if (ar) {
+        ar.className = 'ok';
+        ar.innerHTML = `✓ <strong>Available!</strong> ${sel.room} × ${sel.n} night${sel.n > 1 ? 's' : ''} = <strong>${peso(sel.full)}</strong> <span class="muted">(${peso(sel.dep)} deposit due now)</span>`;
+      }
       checkBtn.textContent = 'Continue to Details →';
       checkBtn.dataset.checked = '1';
       updateTotal();
