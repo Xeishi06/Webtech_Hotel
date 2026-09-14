@@ -98,7 +98,7 @@
       if (!found) return showMsg(form, 'Invalid email or password. Register first if you are new.', false);
       setSession({ name: found.name, email: found.email });
       showMsg(form, 'Welcome back, ' + found.name + '!', true);
-      setTimeout(() => location.href = 'rooms.html', 700);
+      setTimeout(() => location.href = 'landingpage.html', 700);
     });
   }
 
