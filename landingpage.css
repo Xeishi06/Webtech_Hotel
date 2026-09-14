@@ -205,6 +205,31 @@ nav a.active {
 .room-card strong { font-size: 17px; letter-spacing: 0.2px; }
 .room-card a { color: #3F6B4F; font-weight: 600; text-decoration: none; }
 .room-card a:hover { color: #527A57; text-decoration: none; }
+.card-links {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 14px;
+}
+.reserve-pill {
+    background-color: #6F9E72;
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.reserve-pill:hover {
+    background-color: #527A57;
+    color: white !important;
+    transform: translateY(-1px);
+}
+.details-link {
+    display: inline-block;
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+.details-link:hover {
+    transform: translateX(3px);
+}
 .room-card a.main-button, .room-card a.second-button {
     color: white;
 }
