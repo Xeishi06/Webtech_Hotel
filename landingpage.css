@@ -180,7 +180,9 @@ nav a.active {
 .room-card {
     background-color: white;
     width: 100%;
-    padding: 28px 24px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0 24px 28px 24px;
     border: 1px solid #C5D4B8;
     border-radius: 12px;
     overflow: hidden;
@@ -192,10 +194,11 @@ nav a.active {
 
 .room-card img {
     width: calc(100% + 48px);
+    max-width: none;
     height: 210px;
     object-fit: cover;
     display: block;
-    margin: -28px -24px 18px -24px;
+    margin: 0 -24px 18px -24px;
     border-radius: 12px 12px 0 0;
     background-color: #E8F0DF;
 }
