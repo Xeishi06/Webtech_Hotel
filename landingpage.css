@@ -710,6 +710,22 @@ nav a:hover {
     border-radius: 6px;
     color: #3F6B4F;
 }
+#availResult {
+    margin-top: 14px;
+    padding: 12px;
+    background: white;
+    border: 1px dashed #C5D4B8;
+    border-radius: 6px;
+    color: #3F6B4F;
+}
+.success-line {
+    padding: 10px 12px;
+    background: #E8F0DF;
+    border: 1px solid #6F9E72;
+    border-radius: 6px;
+    color: #3F6B4F;
+    font-weight: bold;
+}
 .modal-submit { width: 100%; margin-top: 16px; border: none; cursor: pointer; font: inherit; }
 .form-msg {
     padding: 10px 12px;

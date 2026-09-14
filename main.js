@@ -368,14 +368,8 @@
                 <p class="label">QUICK RESERVE</p>
                 <p class="muted" id="quickSessionNote" hidden></p>
                 <form id="quickReserveForm" novalidate>
-                    <p class="steps"><span id="stepDot1" class="step-dot current">1 Details</span> → <span id="stepDot2" class="step-dot">2 Payment</span></p>
-                    <div id="payStep1">
-                    <label for="qName">Full Name</label>
-                    <input id="qName" type="text" placeholder="Enter your name" required autocomplete="name" />
-                    <label for="qEmail">Gmail / Email</label>
-                    <input id="qEmail" type="email" placeholder="you@gmail.com" required autocomplete="email" />
-                    <label for="qContact">Contact Number</label>
-                    <input id="qContact" type="tel" pattern="09[0-9]{9}" maxlength="11" placeholder="09XXXXXXXXX" required />
+                    <p class="steps"><span id="stepDot0" class="step-dot current">1 Check</span> → <span id="stepDot1" class="step-dot">2 Details</span> → <span id="stepDot2" class="step-dot">3 Payment</span></p>
+                    <div id="payStep0">
                     <label for="qRoom">Room Type</label>
                     <select id="qRoom" required>
                         <option value="">Select a room</option>
@@ -395,8 +389,21 @@
                             <input id="qCheckout" type="date" required />
                         </div>
                     </div>
-                    <div id="quickTotal" aria-live="polite">Select a room and valid dates to see your total.</div>
-                    <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
+                    <div id="availResult" aria-live="polite">Pick a room and dates, then check availability.</div>
+                    <button type="button" class="main-button modal-submit" id="checkAvail">Check Availability →</button>
+                    </div>
+                    <div id="payStep1" hidden>
+                    <p class="success-line" id="bookSummary" aria-live="polite"></p>
+                    <label for="qName">Full Name</label>
+                    <input id="qName" type="text" placeholder="Enter your name" required autocomplete="name" />
+                    <label for="qEmail">Gmail / Email</label>
+                    <input id="qEmail" type="email" placeholder="you@gmail.com" required autocomplete="email" />
+                    <label for="qContact">Contact Number</label>
+                    <input id="qContact" type="tel" pattern="09[0-9]{9}" maxlength="11" placeholder="09XXXXXXXXX" required />
+                    <div class="modal-row">
+                        <button type="button" class="second-button modal-submit" id="backToStep0" style="border:none;cursor:pointer;font:inherit;">← Dates</button>
+                        <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
+                    </div>
                     </div>
                     <div id="payStep2" hidden>
                         <p class="muted" style="margin-top:0;">Only <strong>50% deposit</strong> reserves your room today — balance due at check-in.</p>
@@ -581,7 +588,14 @@
       });
       return { full, dep, n };
     }
-    [roomSel, cin, cout].forEach(el => el && el.addEventListener('change', updateTotal));
+    [roomSel, cin, cout].forEach(el => el && el.addEventListener('change', () => { resetAvailStep(); updateTotal(); }));
+
+    function resetAvailStep() {
+      const btn = $('#checkAvail');
+      if (btn) { btn.textContent = 'Check Availability →'; btn.dataset.checked = ''; }
+      const ar = $('#availResult');
+      if (ar) ar.textContent = 'Pick a room and dates, then check availability.';
+    }
 
     let payMethod = 'GCash';
     function setPayMethod(m) {
@@ -602,38 +616,45 @@
     });
 
     function gotoStep(n) {
-      const s1 = $('#payStep1'), s2 = $('#payStep2');
+      const s0 = $('#payStep0'), s1 = $('#payStep1'), s2 = $('#payStep2');
+      if (s0) s0.hidden = n !== 0;
       if (s1) s1.hidden = n !== 1;
       if (s2) s2.hidden = n !== 2;
-      const d1 = $('#stepDot1'), d2 = $('#stepDot2');
+      const d0 = $('#stepDot0'), d1 = $('#stepDot1'), d2 = $('#stepDot2');
+      if (d0) d0.classList.toggle('current', n === 0);
       if (d1) d1.classList.toggle('current', n === 1);
       if (d2) d2.classList.toggle('current', n === 2);
     }
 
-    function validStep1() {
-      const name = $('#qName').value.trim();
-      const email = $('#qEmail').value.trim();
-      const contact = $('#qContact').value.trim();
+    function dateSelection() {
       const room = currentRoom();
+      const price = PRICES[room] || 0;
       const n = nights();
-      if (!name) { showMsg(form, 'Please enter your full name.', false); return false; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg(form, 'Enter a valid email for confirmation.', false); return false; }
-      if (!/^09\d{9}$/.test(contact)) { showMsg(form, 'Contact must be 11 digits starting with 09.', false); return false; }
-      if (!PRICES[room]) { showMsg(form, 'Please select a room.', false); return false; }
-      if (n <= 0) { showMsg(form, 'Check-out must be after check-in.', false); return false; }
-      // Availability: block overlapping paid bookings for the same room
+      if (!room || !price) return { err: 'Please select a room.' };
+      if (n <= 0) return { err: 'Check-out must be after check-in.' };
       const clash = getReservations().find(r =>
         r.room === room && r.checkin && r.checkout &&
         overlaps(cin.value, cout.value, r.checkin, r.checkout));
-      if (clash) { showMsg(form, `${room} is already booked ${clash.checkin} → ${clash.checkout}. Pick other dates.`, false); return false; }
+      if (clash) return { err: `${room} is already booked ${clash.checkin} → ${clash.checkout}. Pick other dates.` };
+      return { room, n, full: price * n, dep: Math.round(price * n / 2) };
+    }
+
+    function validDetails() {
+      const name = $('#qName').value.trim();
+      const email = $('#qEmail').value.trim();
+      const contact = $('#qContact').value.trim();
+      if (!name) { showMsg(form, 'Please enter your full name.', false); return null; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg(form, 'Enter a valid email for confirmation.', false); return null; }
+      if (!/^09\d{9}$/.test(contact)) { showMsg(form, 'Contact must be 11 digits starting with 09.', false); return null; }
       const old = form.querySelector('.form-msg');
       if (old) old.remove();
-      return true;
+      return { name, email, contact };
     }
 
     function open(room) {
       if (formView) formView.hidden = false;
       if (doneView) doneView.hidden = true;
+      resetAvailStep();
       if (room && roomSel) {
         const want = decodeURIComponent(room);
         Array.from(roomSel.options).forEach((o, i) => {
@@ -654,7 +675,7 @@
         } else if (note) { note.hidden = true; }
       } catch { /* guest mode */ }
       updateTotal();
-      gotoStep(1);
+      gotoStep(0);
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
     }
@@ -676,8 +697,30 @@
     const params = new URLSearchParams(location.search);
     if (params.get('reserve') !== null) open(params.get('reserve') || '');
 
+    const checkBtn = $('#checkAvail');
+    if (checkBtn) checkBtn.addEventListener('click', () => {
+      if (checkBtn.dataset.checked) {
+        const sel = dateSelection();
+        if (sel.err) { resetAvailStep(); return showMsg(form, sel.err, false); }
+        const bs = $('#bookSummary');
+        if (bs) bs.textContent = `✓ ${sel.room} available ${cin.value} → ${cout.value} — ${sel.n} night${sel.n > 1 ? 's' : ''}, ${peso(sel.full)} total (${peso(sel.dep)} deposit).`;
+        gotoStep(1);
+        return;
+      }
+      const sel = dateSelection();
+      if (sel.err) return showMsg(form, sel.err, false);
+      const old = form.querySelector('.form-msg');
+      if (old) old.remove();
+      const ar = $('#availResult');
+      if (ar) ar.innerHTML = `✓ <strong>Available!</strong> ${sel.room} × ${sel.n} night${sel.n > 1 ? 's' : ''} = <strong>${peso(sel.full)}</strong> <span class="muted">(${peso(sel.dep)} deposit due now)</span>`;
+      checkBtn.textContent = 'Continue to Details →';
+      checkBtn.dataset.checked = '1';
+      updateTotal();
+    });
     const toPay = $('#toPayStep');
-    if (toPay) toPay.addEventListener('click', () => { if (validStep1()) { gotoStep(2); setPayMethod(payMethod); updateTotal(); } });
+    if (toPay) toPay.addEventListener('click', () => { if (validDetails()) { gotoStep(2); setPayMethod(payMethod); updateTotal(); } });
+    const back0 = $('#backToStep0');
+    if (back0) back0.addEventListener('click', () => gotoStep(0));
     const back1 = $('#backToStep1');
     if (back1) back1.addEventListener('click', () => gotoStep(1));
     document.addEventListener('click', (e) => {
@@ -688,7 +731,10 @@
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (!validStep1()) { gotoStep(1); return; }
+        const sel = dateSelection();
+        if (sel.err) { gotoStep(0); resetAvailStep(); return showMsg(form, sel.err, false); }
+        const who = validDetails();
+        if (!who) { gotoStep(1); return; }
         let ref = '';
         if (payMethod === 'GCash') {
           ref = ($('#qRef').value || '').replace(/\D/g, '');
@@ -705,13 +751,13 @@
           if (cvc.length < 3 || cvc.length > 4) return showMsg(form, 'Enter the 3–4 digit CVC.', false);
           ref = 'CARD••' + num.slice(-4);
         }
-        const name = $('#qName').value.trim();
-        const email = $('#qEmail').value.trim();
-        const contact = $('#qContact').value.trim();
-        const room = currentRoom();
-        const n = nights();
-        const full = PRICES[room] * n;
-        const dep = Math.round(full / 2);
+        const name = who.name;
+        const email = who.email;
+        const contact = who.contact;
+        const room = sel.room;
+        const n = sel.n;
+        const full = sel.full;
+        const dep = sel.dep;
         const all = getReservations();
         const booking = {
           id: 'ST-' + Date.now().toString(36).toUpperCase(),

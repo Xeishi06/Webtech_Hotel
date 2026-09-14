@@ -348,14 +348,8 @@
                 <p class="label">QUICK RESERVE</p>
                 <p class="muted" id="quickSessionNote" hidden></p>
                 <form id="quickReserveForm" novalidate>
-                    <p class="steps"><span id="stepDot1" class="step-dot current">1 Details</span> → <span id="stepDot2" class="step-dot">2 Payment</span></p>
-                    <div id="payStep1">
-                    <label for="qName">Full Name</label>
-                    <input id="qName" type="text" placeholder="Enter your name" required autocomplete="name" />
-                    <label for="qEmail">Gmail / Email</label>
-                    <input id="qEmail" type="email" placeholder="you@gmail.com" required autocomplete="email" />
-                    <label for="qContact">Contact Number</label>
-                    <input id="qContact" type="tel" pattern="09[0-9]{9}" maxlength="11" placeholder="09XXXXXXXXX" required />
+                    <p class="steps"><span id="stepDot0" class="step-dot current">1 Check</span> → <span id="stepDot1" class="step-dot">2 Details</span> → <span id="stepDot2" class="step-dot">3 Payment</span></p>
+                    <div id="payStep0">
                     <label for="qRoom">Room Type</label>
                     <select id="qRoom" required>
                         <option value="">Select a room</option>
@@ -375,8 +369,21 @@
                             <input id="qCheckout" type="date" required />
                         </div>
                     </div>
-                    <div id="quickTotal" aria-live="polite">Select a room and valid dates to see your total.</div>
-                    <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
+                    <div id="availResult" aria-live="polite">Pick a room and dates, then check availability.</div>
+                    <button type="button" class="main-button modal-submit" id="checkAvail">Check Availability →</button>
+                    </div>
+                    <div id="payStep1" hidden>
+                    <p class="success-line" id="bookSummary" aria-live="polite"></p>
+                    <label for="qName">Full Name</label>
+                    <input id="qName" type="text" placeholder="Enter your name" required autocomplete="name" />
+                    <label for="qEmail">Gmail / Email</label>
+                    <input id="qEmail" type="email" placeholder="you@gmail.com" required autocomplete="email" />
+                    <label for="qContact">Contact Number</label>
+                    <input id="qContact" type="tel" pattern="09[0-9]{9}" maxlength="11" placeholder="09XXXXXXXXX" required />
+                    <div class="modal-row">
+                        <button type="button" class="second-button modal-submit" id="backToStep0" style="border:none;cursor:pointer;font:inherit;">← Dates</button>
+                        <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
+                    </div>
                     </div>
                     <div id="payStep2" hidden>
                         <p class="muted" style="margin-top:0;">Only <strong>50% deposit</strong> reserves your room today — balance due at check-in.</p>
