@@ -518,14 +518,19 @@ nav a:hover {
 .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(232, 213, 181, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: rgba(232, 213, 181, 0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
     z-index: 50;
+    animation: backdropFade 0.3s ease both;
+}
+@keyframes backdropFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 .modal-backdrop[hidden] { display: none; }
 .modal {
