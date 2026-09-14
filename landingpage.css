@@ -518,7 +518,9 @@ nav a:hover {
 .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(40, 80, 50, 0.55);
+    background: linear-gradient(rgba(40, 80, 50, 0.45), rgba(40, 80, 50, 0.45)), url("scene.jpg") center / cover;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -565,6 +567,13 @@ nav a:hover {
     border-radius: 50%;
     font-size: 20px;
     cursor: pointer;
+    z-index: 2;
+}
+.modal-beach {
+    height: 130px;
+    margin: -28px -26px 18px -26px;
+    background: url("scene.jpg") center / cover;
+    border-radius: 14px 14px 0 0;
 }
 #quickTotal {
     margin-top: 14px;
