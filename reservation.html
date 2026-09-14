@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reservation - Stella's Beach House</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+    <h2>Stella's Beach House</h2>
+    
+    <a href="rooms.html">Rooms</a>
+    <a href="reservation.html">Reservation</a>
+    <a href="my-reservations.html">My Reservations</a>
+    <a href="account.html">My Account</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="login.html">Logout</a>
+</nav>
+
+<div class="container">
+
+    <h1>Make a Reservation</h1>
+
+    <form>
+
+        <label>Full Name</label>
+        <input type="text" placeholder="Enter your name">
+
+        <label>Contact Number</label>
+        <input type="text"
+               maxlength="11"
+               oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+               placeholder="Enter your contact number">
+
+        <label>Room Type</label>
+
+        <select>
+            <option>Select a room</option>
+            <option>Couples Room - ₱2,000</option>
+            <option>Family Room 4 - ₱2,500</option>
+            <option>Family Room 6 - ₱3,000</option>
+            <option>Family Room 12 - ₱4,500</option>
+            <option>Family Room 15 - ₱7,000</option>
+        </select>
+
+        <label>Check-in Date</label>
+        <input type="date">
+
+        <label>Check-out Date</label>
+        <input type="date">
+
+        <label>Payment Method</label>
+
+        <select>
+            <option>Select payment method</option>
+            <option>Card Payment</option>
+            <option>GCash</option>
+            <option>Bank Transfer</option>
+        </select>
+
+        <button type="submit">Submit Reservation</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

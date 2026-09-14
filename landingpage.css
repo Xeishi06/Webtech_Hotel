@@ -1,0 +1,308 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFF8E7;
+}
+
+
+/* Navigation */
+nav {
+    background-color: #3F6B4F;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav h2 {
+    color: white;
+    margin: 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.register-button {
+    background-color: #E8D5B5;
+    color: #3F6B4F;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+
+/* Hero */
+.hero {
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+
+    background-image:
+        linear-gradient(
+            rgba(40, 80, 50, 0.40),
+            rgba(40, 80, 50, 0.40)
+        ),
+        url("scene.jpg");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    width: 700px;
+}
+
+.welcome {
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.hero h1 {
+    font-size: 55px;
+    margin: 15px 0;
+}
+
+.hero p {
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+
+/* Buttons */
+.main-button,
+.second-button {
+    display: inline-block;
+    padding: 13px 25px;
+    margin: 10px 5px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.main-button {
+    background-color: #6F9E72;
+    color: white;
+}
+
+.main-button:hover {
+    background-color: #527A57;
+}
+
+.second-button {
+    background-color: #E8D5B5;
+    color: #3F6B4F;
+}
+
+.second-button:hover {
+    background-color: #D8C39E;
+}
+
+
+/* About */
+.about {
+    background-color: #FFF8E7;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.about p {
+    max-width: 800px;
+    margin: 15px auto;
+    line-height: 1.7;
+    color: #555;
+}
+
+.about h2 {
+    font-size: 35px;
+    color: #3F6B4F;
+}
+
+
+/* Section Label */
+.label {
+    color: #6F9E72;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+
+/* Rooms */
+.rooms {
+    padding: 80px 30px;
+    text-align: center;
+    background-color: #E8F0DF;
+}
+
+.rooms h2 {
+    font-size: 35px;
+    color: #3F6B4F;
+}
+
+.room-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.room-card {
+    background-color: white;
+    width: 220px;
+    padding: 25px 20px;
+    border: 1px solid #C5D4B8;
+    border-radius: 10px;
+}
+
+.room-card h3 {
+    color: #3F6B4F;
+}
+
+.room-card p {
+    color: #666;
+}
+
+.room-card strong {
+    color: #6F9E72;
+}
+
+
+/* Features */
+.features {
+    background-color: #FFF8E7;
+    text-align: center;
+    padding: 80px 30px;
+}
+
+.features h2 {
+    font-size: 35px;
+    color: #3F6B4F;
+}
+
+.feature-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.feature-card {
+    width: 250px;
+    padding: 25px;
+    background-color: #E8F0DF;
+    border-radius: 10px;
+}
+
+.feature-card h3 {
+    color: #3F6B4F;
+}
+
+.feature-card p {
+    color: #555;
+    line-height: 1.5;
+}
+
+
+/* Contact */
+.contact {
+    background-color: #E8F0DF;
+    color: #3F6B4F;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.contact h2 {
+    font-size: 35px;
+    margin: 10px 0 15px;
+}
+
+.contact > p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    margin: 40px 0;
+}
+
+.contact-info div {
+    background-color: white;
+    width: 220px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #C5D4B8;
+}
+
+.contact-info h3 {
+    color: #3F6B4F;
+    margin-bottom: 10px;
+}
+
+.contact-info p {
+    color: #666;
+}
+
+.contact .main-button {
+    background-color: #6F9E72;
+    color: white;
+}
+
+.contact .main-button:hover {
+    background-color: #527A57;
+}
+
+
+/* Footer */
+footer {
+    background-color: #3F6B4F;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+footer p {
+    margin: 7px;
+}
+
+
+/* Mobile */
+@media (max-width: 800px) {
+
+    nav {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    nav a {
+        margin-left: 8px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .hero-content {
+        width: auto;
+        padding: 20px;
+    }
+
+    .contact-info {
+        gap: 20px;
+    }
+}
