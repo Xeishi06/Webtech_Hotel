@@ -341,7 +341,89 @@
     els.forEach(el => io.observe(el));
   }
 
+  function ensureReserveModal() {
+    // Category pages have no modal markup: inject the same reserve
+    // dialog so Reserve opens in place instead of jumping pages.
+    if (document.getElementById('reserveModal')) return;
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="modal-backdrop" id="reserveModal" hidden>
+        <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+            <div class="modal-grid">
+            <aside class="modal-room">
+                <img id="mRoomImg" src="scene.jpg" alt="Selected room" />
+                <span class="badge" id="mRoomBadge">Best for couples</span>
+                <h2 id="modalTitle">Book Your Stay</h2>
+                <p class="muted" id="mRoomMeta">Good for 2 persons</p>
+                <p><strong id="mRoomPrice">₱2,000 per night</strong></p>
+                <p class="muted">No account needed — we'll confirm via your email. Pay-first: only paid bookings occupy the room.</p>
+            </aside>
+            <div class="modal-form">
+            <div id="modalFormView">
+                <p class="label">QUICK RESERVE</p>
+                <p class="muted" id="quickSessionNote" hidden></p>
+                <form id="quickReserveForm" novalidate>
+                    <p class="steps"><span id="stepDot1" class="step-dot current">1 Details</span> → <span id="stepDot2" class="step-dot">2 Payment</span></p>
+                    <div id="payStep1">
+                    <label for="qName">Full Name</label>
+                    <input id="qName" type="text" placeholder="Enter your name" required autocomplete="name" />
+                    <label for="qEmail">Gmail / Email</label>
+                    <input id="qEmail" type="email" placeholder="you@gmail.com" required autocomplete="email" />
+                    <label for="qContact">Contact Number</label>
+                    <input id="qContact" type="tel" pattern="09[0-9]{9}" maxlength="11" placeholder="09XXXXXXXXX" required />
+                    <label for="qRoom">Room Type</label>
+                    <select id="qRoom" required>
+                        <option value="">Select a room</option>
+                        <option>Couples Room - ₱2,000</option>
+                        <option>Family Room 4 - ₱2,500</option>
+                        <option>Family Room 6 - ₱3,000</option>
+                        <option>Family Room 12 - ₱4,500</option>
+                        <option>Family Room 15 - ₱7,000</option>
+                    </select>
+                    <div class="modal-row">
+                        <div>
+                            <label for="qCheckin">Check-in</label>
+                            <input id="qCheckin" type="date" required />
+                        </div>
+                        <div>
+                            <label for="qCheckout">Check-out</label>
+                            <input id="qCheckout" type="date" required />
+                        </div>
+                    </div>
+                    <div id="quickTotal" aria-live="polite">Select a room and valid dates to see your total.</div>
+                    <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
+                    </div>
+                    <div id="payStep2" hidden>
+                        <div class="pay-box">
+                            <p class="label">PAY WITH GCASH</p>
+                            <p class="pay-total" id="payTotalLine">Total: —</p>
+                            <p>Send payment to <strong>0912 345 6789</strong><br /><span class="muted">Stella's Beach House • QR code coming soon</span></p>
+                        </div>
+                        <label for="qRef">GCash Reference Number</label>
+                        <input id="qRef" type="text" inputmode="numeric" maxlength="13" placeholder="e.g. 1234567890123" required />
+                        <p class="muted">No ref = no reservation. Unpaid holds never block the calendar.</p>
+                        <div class="modal-row">
+                            <button type="button" class="second-button modal-submit" id="backToStep1" style="border:none;cursor:pointer;font:inherit;">← Back</button>
+                            <button type="submit" class="main-button modal-submit">Confirm Booking</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="modalDoneView" hidden>
+                <p class="label">RESERVED ✓</p>
+                <h2>You're Booked!</h2>
+                <p id="modalDoneText">Confirmation sent to your email.</p>
+                <p><strong>Booking ID:</strong> <span id="modalBookingId"></span></p>
+                <button type="button" class="main-button" data-close>Done</button>
+            </div>
+            </div>
+        </div>
+    </div>`;
+    document.body.appendChild(wrap.firstElementChild);
+  }
+
   function initQuickReserve() {
+    ensureReserveModal();
     const modal = $('#reserveModal');
     if (!modal) return;
     const form = $('#quickReserveForm');
