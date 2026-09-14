@@ -451,7 +451,8 @@ nav a:hover {
     border-radius: 12px;
     margin-bottom: 10px;
 }
-.rooms-link { color: #3F6B4F; font-weight: bold; }
+.rooms-link { color: #3F6B4F; font-weight: bold; text-decoration: none; }
+.rooms-link:hover { text-decoration: none; color: #527A57; }
 .cta-card {
     background-color: #E8D5B5;
     border-color: #C5D4B8;
