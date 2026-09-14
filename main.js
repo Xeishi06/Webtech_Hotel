@@ -984,6 +984,7 @@
       const out = document.createElement('a');
       out.textContent = 'Logout';
       out.setAttribute('href', 'landingpage.html');
+      out.setAttribute('data-logout-link', '');
       out.className = a.className;
       out.addEventListener('click', (e) => { e.preventDefault(); confirmLogout(doLogout); });
       a.replaceWith(out);
