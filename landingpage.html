@@ -22,7 +22,7 @@
             <a href="#rooms">Rooms</a>
             <a href="#contact">Contact</a>
             <a href="login.html" data-login>Login</a>
-            <a href="register.html" class="register-button">
+            <a href="register.html" class="register-button" data-register>
                 Create Account
             </a>
         </div>
@@ -366,6 +366,27 @@
                 <button type="submit" class="main-button modal-submit">Login</button>
             </form>
             <p>Don't have an account? <a href="register.html">Create an account</a></p>
+        </div>
+    </div>
+
+    <!-- REGISTER MODAL (page still works as fallback) -->
+    <div class="modal-backdrop" id="registerModal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="registerTitle">
+            <button type="button" class="modal-close" data-close-register aria-label="Close">×</button>
+            <p class="label">JOIN US</p>
+            <h2 id="registerTitle">Create Account</h2>
+            <form id="quickRegisterForm" novalidate>
+                <label for="qRegName">Full Name</label>
+                <input id="qRegName" type="text" placeholder="Enter your full name" required autocomplete="name" />
+                <label for="qRegEmail">Email</label>
+                <input id="qRegEmail" type="email" placeholder="Enter your email" required autocomplete="email" />
+                <label for="qRegPassword">Password</label>
+                <input id="qRegPassword" type="password" placeholder="Min 6 characters" required minlength="6" autocomplete="new-password" />
+                <label for="qRegPassword2">Confirm Password</label>
+                <input id="qRegPassword2" type="password" placeholder="Confirm your password" required autocomplete="new-password" />
+                <button type="submit" class="main-button modal-submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="login.html">Login here</a></p>
         </div>
     </div>
 

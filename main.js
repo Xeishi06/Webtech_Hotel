@@ -511,11 +511,62 @@
     }
   }
 
+  function initRegisterModal() {
+    const modal = $('#registerModal');
+    if (!modal) return;
+    const form = $('#quickRegisterForm');
+    function open() {
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      const n = $('#qRegName');
+      if (n) n.focus();
+    }
+    function close() {
+      modal.hidden = true;
+      if ($('#reserveModal') && $('#reserveModal').hidden
+        && $('#loginModal') && $('#loginModal').hidden) document.body.style.overflow = '';
+    }
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-register]');
+      if (t) {
+        if (getSession()) return; // already swapped to Logout
+        e.preventDefault();
+        open();
+        return;
+      }
+      if (e.target.closest('[data-close-register]') || e.target === modal) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) close();
+    });
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = $('#qRegName').value.trim();
+        const email = $('#qRegEmail').value.trim().toLowerCase();
+        const pw = $('#qRegPassword').value;
+        const pw2 = $('#qRegPassword2').value;
+        if (!name || !email || !pw) return showMsg(form, 'Please fill in all fields.', false);
+        if (pw.length < 6) return showMsg(form, 'Password must be at least 6 characters.', false);
+        if (pw !== pw2) return showMsg(form, 'Passwords do not match.', false);
+        const users = getUsers();
+        if (users.some(u => u.email === email)) return showMsg(form, 'That email is already registered. Try logging in.', false);
+        users.push({ name, email, pw, contact: '', created: new Date().toISOString() });
+        saveUsers(users);
+        setSession({ name, email });
+        showMsg(form, 'Welcome, ' + name + '! Your account is ready.', true);
+        initAuthNav();
+        setTimeout(close, 800);
+      });
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     markActiveNav();
     initMobileNav();
     initAuthNav();
     initLoginModal();
+    initRegisterModal();
     initSmoothScroll();
     initReveal();
     initQuickReserve();
