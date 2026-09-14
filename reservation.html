@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservation - Stella's Beach House</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -10,33 +12,33 @@
 <nav>
     <h2>Stella's Beach House</h2>
     
+    <a href="landingpage.html">Home</a>
     <a href="rooms.html">Rooms</a>
     <a href="reservation.html">Reservation</a>
     <a href="my-reservations.html">My Reservations</a>
     <a href="account.html">My Account</a>
     <a href="feedback.html">Feedback</a>
-    <a href="login.html">Logout</a>
+    <a href="login.html" data-logout>Logout</a>
 </nav>
 
 <div class="container">
 
     <h1>Make a Reservation</h1>
 
-    <form>
+    <form id="reserveForm" novalidate>
 
-        <label>Full Name</label>
-        <input type="text" placeholder="Enter your name">
+        <label for="resName">Full Name</label>
+        <input id="resName" type="text" placeholder="Enter your name" required autocomplete="name">
 
-        <label>Contact Number</label>
-        <input type="text"
-               maxlength="11"
+        <label for="resContact">Contact Number</label>
+        <input id="resContact" type="tel" pattern="09[0-9]{9}" maxlength="11"
                oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-               placeholder="Enter your contact number">
+               placeholder="09XXXXXXXXX" required>
 
-        <label>Room Type</label>
+        <label for="resRoom">Room Type</label>
 
-        <select>
-            <option>Select a room</option>
+        <select id="resRoom" required>
+            <option value="">Select a room</option>
             <option>Couples Room - ₱2,000</option>
             <option>Family Room 4 - ₱2,500</option>
             <option>Family Room 6 - ₱3,000</option>
@@ -44,20 +46,22 @@
             <option>Family Room 15 - ₱7,000</option>
         </select>
 
-        <label>Check-in Date</label>
-        <input type="date">
+        <label for="resCheckin">Check-in Date</label>
+        <input id="resCheckin" type="date" required>
 
-        <label>Check-out Date</label>
-        <input type="date">
+        <label for="resCheckout">Check-out Date</label>
+        <input id="resCheckout" type="date" required>
 
-        <label>Payment Method</label>
+        <label for="resPay">Payment Method</label>
 
-        <select>
-            <option>Select payment method</option>
+        <select id="resPay" required>
+            <option value="">Select payment method</option>
             <option>Card Payment</option>
             <option>GCash</option>
             <option>Bank Transfer</option>
         </select>
+
+        <div id="priceSummary" aria-live="polite">Select a room and valid dates to see your total.</div>
 
         <button type="submit">Submit Reservation</button>
 
@@ -65,5 +69,10 @@
 
 </div>
 
+<footer>
+    <p>&copy; 2026 Stella's Beach House</p>
+</footer>
+
+<script src="main.js"></script>
 </body>
 </html>

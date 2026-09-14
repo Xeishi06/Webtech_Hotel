@@ -10,6 +10,9 @@ body {
 nav {
     background-color: #3F6B4F;
     padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 nav h2 {
@@ -24,11 +27,28 @@ nav a {
     margin-right: 20px;
 }
 
+nav a.active {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.nav-toggle {
+    display: none;
+    width: auto;
+    background: #E8D5B5;
+    color: #3F6B4F;
+    padding: 8px 12px;
+    margin: 0 0 10px 0;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
 
 /* Main Container */
 
 .container {
     width: 400px;
+    max-width: 92%;
     margin: 50px auto;
     padding: 30px;
     background-color: white;
@@ -76,7 +96,9 @@ button:hover {
 
 .room-container {
     width: 900px;
+    max-width: 94%;
     margin: 40px auto;
+    padding: 0 10px;
 }
 
 .room-container h1 {
@@ -144,4 +166,42 @@ a {
 
 a:hover {
     color: #6F9E72;
+}
+
+/* Helpers - same palette only */
+.form-msg {
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: #E8F0DF;
+    border: 1px solid #C5D4B8;
+    color: #3F6B4F;
+    margin: 0 0 15px 0;
+}
+.form-msg.error { background: #fdecea; border-color: #e0a8a8; color: #7a2e2e; }
+.form-msg.success { background: #E8F0DF; border-color: #6F9E72; }
+.muted { color: #666; font-size: 0.9em; }
+#priceSummary {
+    margin-top: 15px;
+    padding: 12px;
+    background: #FFF8E7;
+    border: 1px dashed #C5D4B8;
+    border-radius: 6px;
+    color: #3F6B4F;
+}
+footer {
+    background-color: #3F6B4F;
+    color: white;
+    text-align: center;
+    padding: 24px 16px;
+    margin-top: 50px;
+}
+
+/* Responsive - layout only, no color changes */
+@media (max-width: 800px) {
+    nav h2 { display: block; margin: 0 0 10px 0; }
+    .nav-toggle { display: inline-block; }
+    nav a { display: none; margin: 8px 12px 8px 0; }
+    nav.open a { display: inline-block; }
+    .container { margin: 24px auto; padding: 20px; }
+    .room-card button { width: 100%; }
 }

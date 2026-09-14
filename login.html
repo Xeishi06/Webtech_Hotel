@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Stella's Beach House</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,20 +13,22 @@
 
     <h1>Customer Login</h1>
 
-    <form>
-        <label>Email</label>
-        <input type="email" placeholder="Enter your email">
+    <form id="loginForm" novalidate>
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" type="email" placeholder="Enter your email" required autocomplete="email">
 
-        <label>Password</label>
-        <input type="password" placeholder="Enter your password">
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password" placeholder="Enter your password" required autocomplete="current-password">
 
         <button type="submit">Login</button>
     </form>
 
     <p>Don't have an account?</p>
     <a href="register.html">Create an account</a>
+    <p><a href="landingpage.html">← Back to home</a></p>
 
 </div>
 
+<script src="main.js"></script>
 </body>
 </html>

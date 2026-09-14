@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Feedback - Stella's Beach House</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,12 +13,13 @@
 <nav>
     <h2>Stella's Beach House</h2>
     
+    <a href="landingpage.html">Home</a>
     <a href="rooms.html">Rooms</a>
     <a href="reservation.html">Reservation</a>
     <a href="my-reservations.html">My Reservations</a>
     <a href="account.html">My Account</a>
     <a href="feedback.html">Feedback</a>
-    <a href="login.html">Logout</a>
+    <a href="login.html" data-logout>Logout</a>
 
 </nav>
 
@@ -24,14 +27,14 @@
 
     <h1>Customer Feedback</h1>
 
-    <form>
+    <form id="feedbackForm" novalidate>
 
-        <label>Your Name</label>
-        <input type="text" placeholder="Enter your name">
+        <label for="fbName">Your Name</label>
+        <input id="fbName" type="text" placeholder="Enter your name" required>
 
-        <label>Rating</label>
-        <select>
-            <option>Select rating</option>
+        <label for="fbRating">Rating</label>
+        <select id="fbRating" required>
+            <option value="">Select rating</option>
             <option>5 - Excellent</option>
             <option>4 - Very Good</option>
             <option>3 - Good</option>
@@ -39,9 +42,9 @@
             <option>1 - Poor</option>
         </select>
 
-        <label>Your Feedback</label>
-        <textarea
-            placeholder="Write your feedback here"></textarea>
+        <label for="fbText">Your Feedback</label>
+        <textarea id="fbText"
+            placeholder="Write your feedback here" required></textarea>
 
         <button type="submit">Submit Feedback</button>
 
@@ -49,6 +52,11 @@
 
 </div>
 
+<footer>
+    <p>&copy; 2026 Stella's Beach House</p>
+</footer>
+
+<script src="main.js"></script>
 </body>
 </html>
 
