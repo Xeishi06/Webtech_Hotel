@@ -1014,7 +1014,10 @@
     function paintStars() {
       document.querySelectorAll('#starPick button').forEach(b => {
         b.classList.toggle('lit', Number(b.dataset.star) <= stars);
+        b.setAttribute('aria-checked', Number(b.dataset.star) === stars ? 'true' : 'false');
       });
+      const sc = document.getElementById('starCount');
+      if (sc) sc.textContent = `${stars}/5`;
     }
     document.addEventListener('click', (e) => {
       const s = e.target.closest('#starPick button');

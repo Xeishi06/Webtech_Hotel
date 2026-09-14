@@ -622,7 +622,7 @@ nav a:hover {
     padding: 0 2px;
     transition: color 0.2s ease, transform 0.2s ease;
 }
-.star-pick button.lit { color: #6F9E72; }
+.star-pick button.lit { color: #3F6B4F; text-shadow: 0 0 1px #3F6B4F; }
 .star-pick button:hover { transform: scale(1.15); }
 .modal textarea {
     width: 100%;
