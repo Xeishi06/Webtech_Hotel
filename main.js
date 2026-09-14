@@ -576,7 +576,7 @@
                 <div class="receipt">
                     <p class="label">BOOKING RECEIPT ✓</p>
                     <h2>Stella's Beach House</h2>
-                    <p class="muted">San Mateo, Rizal • 0912 345 6789</p>
+                    <p class="muted">Purok 1, Barangay Patar, Bolinao, Pangasinan • 0912 345 6789</p>
                     <hr />
                     <dl>
                         <div><dt>Booking ID</dt><dd id="rId">—</dd></div>
