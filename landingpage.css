@@ -628,6 +628,29 @@ nav a:hover {
 .form-msg.error { background: #fdecea; border-color: #e0a8a8; color: #7a2e2e; }
 .form-msg.success { background: #E8F0DF; border-color: #6F9E72; }
 
+/* Receipt - same palette only */
+.receipt { text-align: left; }
+.receipt h2, .receipt > p { text-align: center; }
+.receipt hr { border: 0; border-top: 1px dashed #C5D4B8; margin: 14px 0; }
+.receipt dl { margin: 0; }
+.receipt dl > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 5px 0;
+    border-bottom: 1px solid #E8F0DF;
+}
+.receipt dt { color: #666; font-size: 13px; }
+.receipt dd { margin: 0; font-weight: bold; color: #333; text-align: right; }
+.receipt .total dt, .receipt .total dd { color: #3F6B4F; font-size: 18px; }
+.receipt a { color: #3F6B4F; font-weight: bold; text-decoration: none; }
+@media print {
+    body * { visibility: hidden; }
+    .receipt, .receipt * { visibility: visible; }
+    .receipt { position: absolute; inset: 0; margin: 0 auto; max-width: 500px; }
+    .receipt .modal-row, .receipt a { display: none; }
+}
+
 /* Reserve modal as mini webpage: room panel + form */
 .modal-wide { max-width: 880px; padding: 0; overflow: hidden; }
 .modal-grid { display: grid; grid-template-columns: 1fr 1.25fr; }

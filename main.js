@@ -438,11 +438,33 @@
                 </form>
             </div>
             <div id="modalDoneView" hidden>
-                <p class="label">RESERVED ✓</p>
-                <h2>You're Booked!</h2>
-                <p id="modalDoneText">Confirmation sent to your email.</p>
-                <p><strong>Booking ID:</strong> <span id="modalBookingId"></span></p>
-                <button type="button" class="main-button" data-close>Done</button>
+                <div class="receipt">
+                    <p class="label">BOOKING RECEIPT ✓</p>
+                    <h2>Stella's Beach House</h2>
+                    <p class="muted">San Mateo, Rizal • 0912 345 6789</p>
+                    <hr />
+                    <dl>
+                        <div><dt>Booking ID</dt><dd id="rId">—</dd></div>
+                        <div><dt>Guest</dt><dd id="rName">—</dd></div>
+                        <div><dt>Email</dt><dd id="rEmail">—</dd></div>
+                        <div><dt>Room</dt><dd id="rRoom">—</dd></div>
+                        <div><dt>Check-in</dt><dd id="rIn">—</dd></div>
+                        <div><dt>Check-out</dt><dd id="rOut">—</dd></div>
+                        <div><dt>Rate</dt><dd id="rRate">—</dd></div>
+                        <div><dt>Nights</dt><dd id="rNights">—</dd></div>
+                        <div><dt>Payment</dt><dd id="rPay">—</dd></div>
+                        <div><dt>Reference</dt><dd id="rRef">—</dd></div>
+                        <div class="total"><dt>Total Paid</dt><dd id="rTotal">—</dd></div>
+                        <div><dt>Status</dt><dd>Confirmed ✓</dd></div>
+                    </dl>
+                    <hr />
+                    <p class="muted" id="modalDoneText">Show this receipt at check-in.</p>
+                    <div class="modal-row">
+                        <button type="button" class="second-button modal-submit" id="printReceipt" style="border:none;cursor:pointer;font:inherit;">🖨 Print</button>
+                        <button type="button" class="main-button modal-submit" data-close>Done</button>
+                    </div>
+                    <p><a href="my-reservations.html">View My Reservations →</a></p>
+                </div>
             </div>
             </div>
         </div>
@@ -678,14 +700,28 @@
         saveReservations(all);
         if (formView) formView.hidden = true;
         if (doneView) doneView.hidden = false;
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        set('rId', booking.id);
+        set('rName', name);
+        set('rEmail', email);
+        set('rRoom', room);
+        set('rIn', cin.value);
+        set('rOut', cout.value);
+        set('rRate', `${peso(PRICES[room])} / night`);
+        set('rNights', `${n} night${n > 1 ? 's' : ''}`);
+        set('rPay', payMethod);
+        set('rRef', ref);
+        set('rTotal', peso(booking.total));
         const dt = $('#modalDoneText');
-        if (dt) dt.textContent = `${room} × ${n} night${n > 1 ? 's' : ''} — ${peso(booking.total)} via ${payMethod}. Confirmation will be sent to ${email}. Show this ID at check-in.`;
-        const bid = $('#modalBookingId');
-        if (bid) bid.textContent = `${booking.id} • GCash ref ${ref}`;
+        if (dt) dt.textContent = `A confirmation will be sent to ${email}. Show this receipt at check-in.`;
         form.reset();
         gotoStep(1);
       });
     }
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('#printReceipt')) window.print();
+    });
+  }
   }
 
   function initAuthNav() {
