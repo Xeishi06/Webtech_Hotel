@@ -253,7 +253,7 @@
       div.innerHTML = `<h2>${r.room}</h2>
         <p><strong>ID:</strong> ${r.id}</p>
         <p><strong>Check-in:</strong> ${r.checkin} &nbsp; <strong>Check-out:</strong> ${r.checkout}</p>
-        <p><strong>Nights:</strong> ${r.nights} &nbsp; <strong>Total:</strong> ${peso(r.total)}</p>
+        <p><strong>Nights:</strong> ${r.nights} &nbsp; <strong>Total:</strong> ${peso(r.total)}${r.deposit ? ` (deposit ${peso(r.deposit)} paid, ${peso(r.balance != null ? r.balance : r.total - r.deposit)} at check-in)` : ''}</p>
         <p><strong>Payment:</strong> ${r.payment || '-'}${r.ref ? ' • Ref ' + r.ref : ''} &nbsp; <strong>Status:</strong> ${r.status}</p>
         <button type="button" data-cancel="${r.id}">Cancel Reservation</button>`;
       list.appendChild(div);
@@ -399,6 +399,7 @@
                     <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
                     </div>
                     <div id="payStep2" hidden>
+                        <p class="muted" style="margin-top:0;">Only <strong>50% deposit</strong> reserves your room today — balance due at check-in.</p>
                         <div class="pay-methods" role="tablist" aria-label="Payment method">
                             <button type="button" class="pay-method current" data-pay="GCash">GCash</button>
                             <button type="button" class="pay-method" data-pay="Card">Card</button>
@@ -458,7 +459,9 @@
                         <div><dt>Nights</dt><dd id="rNights">—</dd></div>
                         <div><dt>Payment</dt><dd id="rPay">—</dd></div>
                         <div><dt>Reference</dt><dd id="rRef">—</dd></div>
-                        <div class="total"><dt>Total Paid</dt><dd id="rTotal">—</dd></div>
+                        <div><dt>Deposit Paid (50%)</dt><dd id="rDep">—</dd></div>
+                        <div><dt>Balance at Check-in</dt><dd id="rBal">—</dd></div>
+                        <div class="total"><dt>Total</dt><dd id="rTotal">—</dd></div>
                         <div><dt>Status</dt><dd>Confirmed ✓</dd></div>
                     </dl>
                     <hr />
@@ -565,15 +568,18 @@
       fillPanel(room);
       const price = PRICES[room] || 0;
       const n = nights();
+      const full = price && n > 0 ? price * n : 0;
+      const dep = full ? Math.round(full / 2) : 0;
       if (total) {
-        if (!price || n <= 0) total.textContent = 'Select a room and valid dates to see your total.';
-        else total.innerHTML = `<strong>${room}</strong> × ${n} night${n > 1 ? 's' : ''} = <strong>${peso(price * n)}</strong>`;
+        if (!full) total.textContent = 'Select a room and valid dates to see your total.';
+        else total.innerHTML = `<strong>${room}</strong> × ${n} night${n > 1 ? 's' : ''} = <strong>${peso(full)}</strong> <span class="muted">(${peso(dep)} deposit due now)</span>`;
       }
       const ptl = $('#payTotalLine');
-      if (ptl) ptl.textContent = (!price || n <= 0) ? 'Total: —' : `Total: ${peso(price * n)} (${n} night${n > 1 ? 's' : ''})`;
+      if (ptl) ptl.textContent = !full ? 'Total: —' : `Total: ${peso(full)} • Deposit due now (50%): ${peso(dep)}`;
       document.querySelectorAll('.pay-total-val').forEach(el => {
-        el.textContent = (!price || n <= 0) ? '—' : `${peso(price * n)} (${n} night${n > 1 ? 's' : ''})`;
+        el.textContent = !full ? '—' : `${peso(full)} total • ${peso(dep)} deposit`;
       });
+      return { full, dep, n };
     }
     [roomSel, cin, cout].forEach(el => el && el.addEventListener('change', updateTotal));
 
@@ -628,6 +634,14 @@
     function open(room) {
       if (formView) formView.hidden = false;
       if (doneView) doneView.hidden = true;
+      // Carry hero availability dates into the booking form
+      try {
+        const sq = JSON.parse(localStorage.getItem('stella_search') || 'null');
+        if (sq) {
+          if (cin && !cin.value && sq.cin) cin.value = sq.cin;
+          if (cout && !cout.value && sq.cout) cout.value = sq.cout;
+        }
+      } catch { /* ignore */ }
       if (room && roomSel) {
         const want = decodeURIComponent(room);
         Array.from(roomSel.options).forEach((o, i) => {
@@ -704,12 +718,15 @@
         const contact = $('#qContact').value.trim();
         const room = currentRoom();
         const n = nights();
+        const full = PRICES[room] * n;
+        const dep = Math.round(full / 2);
         const all = getReservations();
         const booking = {
           id: 'ST-' + Date.now().toString(36).toUpperCase(),
           name, email, contact, room,
           checkin: cin.value, checkout: cout.value,
-          nights: n, total: PRICES[room] * n,
+          nights: n, total: full,
+          deposit: dep, balance: full - dep,
           payment: payMethod,
           ref,
           status: 'Confirmed (paid)',
@@ -731,6 +748,8 @@
         set('rNights', `${n} night${n > 1 ? 's' : ''}`);
         set('rPay', payMethod);
         set('rRef', ref);
+        set('rDep', peso(booking.deposit));
+        set('rBal', peso(booking.balance));
         set('rTotal', peso(booking.total));
         const dt = $('#modalDoneText');
         if (dt) dt.textContent = `A confirmation will be sent to ${email}. Show this receipt at check-in.`;
@@ -948,12 +967,64 @@
     paintStars();
   }
 
+  function initAvail() {
+    const bar = $('#availBar');
+    if (!bar) return;
+    const ain = $('#avIn'), aout = $('#avOut');
+    const today = new Date().toISOString().split('T')[0];
+    if (ain) ain.min = today;
+    if (aout) aout.min = today;
+    const CAPS = [2, 4, 6, 12, 15];
+    bar.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const hint = $('#availHint');
+      if (!ain.value || !aout.value || new Date(aout.value) <= new Date(ain.value)) {
+        if (hint) hint.textContent = 'Pick a check-out date after check-in.';
+        return;
+      }
+      const g = Number($('#avGuests').value || 2);
+      try { localStorage.setItem('stella_search', JSON.stringify({ cin: ain.value, cout: aout.value, guests: g })); } catch { /* ignore */ }
+      const cards = Array.from(document.querySelectorAll('#rooms .room-card:not(.cta-card)'));
+      cards.forEach(c => c.classList.remove('flash'));
+      const idx = CAPS.findIndex(c => c >= g);
+      const names = ['Couples Room', 'Family Room 4', 'Family Room 6', 'Family Room 12', 'Family Room 15'];
+      if (idx >= 0 && cards[idx]) {
+        cards[idx].classList.add('flash');
+        setTimeout(() => cards[idx].classList.remove('flash'), 3500);
+        if (hint) hint.textContent = `${names[idx]} fits ${g} — see options below. Dates saved to booking.`;
+      } else if (hint) hint.textContent = 'For 15+ guests, see “Need something bigger?” below.';
+      const target = document.querySelector('#rooms');
+      if (target) {
+        const nav = document.querySelector('nav');
+        const off = (nav ? nav.offsetHeight : 70) + 12;
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - off, behavior: 'smooth' });
+      }
+    });
+  }
+
+  function initFocusTrap() {
+    // Keep Tab cycling inside the open modal (keyboard + screen readers).
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const open = Array.from(document.querySelectorAll('.modal-backdrop')).find(m => !m.hidden);
+      if (!open) return;
+      const items = Array.from(open.querySelectorAll('button, input, select, textarea, a[href]'))
+        .filter(el => !el.disabled && el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     markActiveNav();
     initMobileNav();
     initAuthNav();
+    initFocusTrap();
     initLoginModal();
     initRegisterModal();
+    initAvail();
     initFeedbackWall();
     initSmoothScroll();
     initReveal();

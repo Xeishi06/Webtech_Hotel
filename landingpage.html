@@ -47,6 +47,8 @@
                 memories with your family and loved ones.
             </p>
 
+            <p class="hero-deposit">Reserve with just a 50% deposit — balance at check-in.</p>
+
             <div class="hero-buttons">
 
                 <a href="#rooms" class="second-button">
@@ -54,6 +56,29 @@
                 </a>
 
             </div>
+
+            <form class="avail-bar" id="availBar" aria-label="Check availability">
+                <div>
+                    <label for="avIn">Check-in</label>
+                    <input id="avIn" type="date" required />
+                </div>
+                <div>
+                    <label for="avOut">Check-out</label>
+                    <input id="avOut" type="date" required />
+                </div>
+                <div>
+                    <label for="avGuests">Guests</label>
+                    <select id="avGuests">
+                        <option value="2">2 guests</option>
+                        <option value="4">4 guests</option>
+                        <option value="6">6 guests</option>
+                        <option value="12">12 guests</option>
+                        <option value="15">15 guests</option>
+                    </select>
+                </div>
+                <button type="submit" class="main-button">Check Availability</button>
+            </form>
+            <p class="avail-hint" id="availHint" aria-live="polite"></p>
 
             <a href="#about" class="scroll-down" aria-label="Scroll to about">↓</a>
 
@@ -87,6 +112,15 @@
             <div>✓ Peaceful, family-friendly stay</div>
         </div>
 
+    </section>
+
+
+    <!-- GALLERY -->
+    <section class="gallery" aria-label="Beach house photos">
+        <img src="scene.jpg" alt="Stella's Beach House beachfront" loading="lazy" />
+        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&amp;fit=crop&amp;w=600&amp;q=80" alt="Pool area" loading="lazy" onerror="this.onerror=null;this.src='scene.jpg';" />
+        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&amp;fit=crop&amp;w=600&amp;q=80" alt="Resort view" loading="lazy" onerror="this.onerror=null;this.src='scene.jpg';" />
+        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&amp;fit=crop&amp;w=600&amp;q=80" alt="Guest room" loading="lazy" onerror="this.onerror=null;this.src='scene.jpg';" />
     </section>
 
 
@@ -293,6 +327,13 @@
             Relax. Enjoy. Make Memories.
         </p>
 
+        <p class="footer-stay">
+            Check-in 2:00 PM • Check-out 12:00 NN • 50% deposit reserves your dates
+        </p>
+        <p class="footer-stay muted-light">
+            No smoking indoors • Pets on request • Quiet hours 10 PM – 6 AM
+        </p>
+
         <p class="footer-links">
             <a href="#home">Home</a> •
             <a href="#about">About</a> •
@@ -361,6 +402,7 @@
                     <button type="button" class="main-button modal-submit" id="toPayStep">Continue to Payment →</button>
                     </div>
                     <div id="payStep2" hidden>
+                        <p class="muted" style="margin-top:0;">Only <strong>50% deposit</strong> reserves your room today — balance due at check-in.</p>
                         <div class="pay-methods" role="tablist" aria-label="Payment method">
                             <button type="button" class="pay-method current" data-pay="GCash">GCash</button>
                             <button type="button" class="pay-method" data-pay="Card">Card</button>
@@ -420,7 +462,9 @@
                         <div><dt>Nights</dt><dd id="rNights">—</dd></div>
                         <div><dt>Payment</dt><dd id="rPay">—</dd></div>
                         <div><dt>Reference</dt><dd id="rRef">—</dd></div>
-                        <div class="total"><dt>Total Paid</dt><dd id="rTotal">—</dd></div>
+                        <div><dt>Deposit Paid (50%)</dt><dd id="rDep">—</dd></div>
+                        <div><dt>Balance at Check-in</dt><dd id="rBal">—</dd></div>
+                        <div class="total"><dt>Total</dt><dd id="rTotal">—</dd></div>
                         <div><dt>Status</dt><dd>Confirmed ✓</dd></div>
                     </dl>
                     <hr />
