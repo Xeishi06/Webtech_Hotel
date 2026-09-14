@@ -421,6 +421,15 @@ nav a:hover {
     margin-bottom: 10px;
 }
 .rooms-link { color: #3F6B4F; font-weight: bold; }
+.cta-card {
+    background-color: #E8D5B5;
+    border-color: #C5D4B8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+.cta-card h3, .cta-card p { color: #3F6B4F; }
 .icon-circle {
     width: 52px;
     height: 52px;
