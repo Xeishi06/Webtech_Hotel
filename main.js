@@ -351,7 +351,11 @@
             <button type="button" class="modal-close" data-close aria-label="Close">×</button>
             <div class="modal-grid">
             <aside class="modal-room">
-                <img id="mRoomImg" src="scene.jpg" alt="Selected room" />
+                <div class="gallery-main">
+                    <img id="mRoomImg" src="scene.jpg" alt="Selected room" />
+                    <button type="button" class="gal-arrow left" id="galPrev" aria-label="Previous photo">‹</button>
+                    <button type="button" class="gal-arrow right" id="galNext" aria-label="Next photo">›</button>
+                </div>
                 <div class="modal-thumbs" id="mThumbs" role="tablist" aria-label="Room photos"></div>
                 <span class="badge" id="mRoomBadge">Best for couples</span>
                 <h2 id="modalTitle">Book Your Stay</h2>
@@ -505,29 +509,41 @@
       return new Date(a1) < new Date(b2) && new Date(a2) < new Date(b1);
     }
 
+    let galPhotos = ['scene.jpg'];
+    let galIdx = 0;
+    function showPhoto(i) {
+      const img = $('#mRoomImg');
+      const thumbs = $('#mThumbs');
+      if (!galPhotos.length) return;
+      galIdx = (i + galPhotos.length) % galPhotos.length;
+      if (img) {
+        img.style.opacity = '0';
+        setTimeout(() => {
+          img.src = galPhotos[galIdx];
+          img.alt = `${currentRoom() || 'Room'} photo ${galIdx + 1}`;
+          img.style.opacity = '1';
+        }, 150);
+        img.onerror = () => { img.src = 'scene.jpg'; };
+      }
+      if (thumbs) thumbs.querySelectorAll('img').forEach((x, xi) => x.classList.toggle('active', xi === galIdx));
+    }
+
     function fillPanel(room) {
       const info = ROOM_INFO[room];
       const img = $('#mRoomImg');
       const thumbs = $('#mThumbs');
+      galPhotos = info ? info.photos.slice() : ['scene.jpg'];
+      galIdx = 0;
       if (thumbs) {
-        const photos = info ? info.photos : ['scene.jpg'];
         thumbs.innerHTML = '';
-        photos.forEach((src, i) => {
+        galPhotos.forEach((src, i) => {
           const t = document.createElement('img');
           t.src = src;
           t.alt = `${room || 'Room'} photo ${i + 1}`;
           t.loading = 'lazy';
           t.className = i === 0 ? 'active' : '';
           t.onerror = () => { t.src = 'scene.jpg'; };
-          t.addEventListener('click', () => {
-            if (img) {
-              img.style.opacity = '0';
-              setTimeout(() => { img.src = src; img.alt = t.alt; img.style.opacity = '1'; }, 150);
-              img.onerror = () => { img.src = 'scene.jpg'; };
-            }
-            thumbs.querySelectorAll('img').forEach(x => x.classList.remove('active'));
-            t.classList.add('active');
-          });
+          t.addEventListener('click', () => showPhoto(i));
           thumbs.appendChild(t);
         });
       }
@@ -658,6 +674,10 @@
     if (toPay) toPay.addEventListener('click', () => { if (validStep1()) { gotoStep(2); setPayMethod(payMethod); updateTotal(); } });
     const back1 = $('#backToStep1');
     if (back1) back1.addEventListener('click', () => gotoStep(1));
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('#galPrev') && modal && !modal.hidden) showPhoto(galIdx - 1);
+      if (e.target.closest('#galNext') && modal && !modal.hidden) showPhoto(galIdx + 1);
+    });
 
     if (form) {
       form.addEventListener('submit', (e) => {

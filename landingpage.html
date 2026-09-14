@@ -297,7 +297,11 @@
             <button type="button" class="modal-close" data-close aria-label="Close">×</button>
             <div class="modal-grid">
             <aside class="modal-room">
-                <img id="mRoomImg" src="scene.jpg" alt="Selected room" />
+                <div class="gallery-main">
+                    <img id="mRoomImg" src="scene.jpg" alt="Selected room" />
+                    <button type="button" class="gal-arrow left" id="galPrev" aria-label="Previous photo">‹</button>
+                    <button type="button" class="gal-arrow right" id="galNext" aria-label="Next photo">›</button>
+                </div>
                 <div class="modal-thumbs" id="mThumbs" role="tablist" aria-label="Room photos"></div>
                 <span class="badge" id="mRoomBadge">Best for couples</span>
                 <h2 id="modalTitle">Book Your Stay</h2>
