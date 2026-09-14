@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-    background-color: #E8D5B5;
+    background-color: #FFF8E7;
     color: #333;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -180,7 +180,7 @@ nav a.active {
 .rooms {
     padding: 80px 24px;
     text-align: center;
-    background-color: #E8D5B5;
+    background-color: #FFF8E7;
 }
 
 .rooms h2 {
@@ -324,7 +324,7 @@ nav a.active {
 
 /* Contact */
 .contact {
-    background-color: #E8D5B5;
+    background-color: #FFF8E7;
     color: #3F6B4F;
     text-align: center;
     padding: 80px 20px;
