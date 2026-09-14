@@ -38,11 +38,12 @@ nav a {
 }
 
 nav a:hover {
-    text-decoration: underline;
+    opacity: 0.85;
+    text-decoration: none;
 }
 
 nav a.active {
-    text-decoration: underline;
+    text-decoration: none;
     font-weight: bold;
 }
 
@@ -203,7 +204,7 @@ nav a.active {
 .room-card p { font-size: 15.5px; line-height: 1.55; margin: 6px 0; }
 .room-card strong { font-size: 17px; letter-spacing: 0.2px; }
 .room-card a { color: #3F6B4F; font-weight: 600; text-decoration: none; }
-.room-card a:hover { color: #527A57; text-decoration: underline; }
+.room-card a:hover { color: #527A57; text-decoration: none; }
 
 .room-card img {
     width: calc(100% + 48px);
