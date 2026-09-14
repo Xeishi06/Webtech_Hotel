@@ -31,7 +31,14 @@ nav h2 {
 nav a {
     color: white;
     text-decoration: none;
-    margin-right: 20px;
+    margin-right: 8px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    transition: background-color 0.25s ease;
+}
+
+nav a:hover {
+    background-color: rgba(232, 213, 181, 0.25);
 }
 
 nav a.active {
