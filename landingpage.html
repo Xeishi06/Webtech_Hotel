@@ -293,13 +293,20 @@
 
     <!-- QUICK RESERVE MODAL (guest, no account needed) -->
     <div class="modal-backdrop" id="reserveModal" hidden>
-        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <button type="button" class="modal-close" data-close aria-label="Close">×</button>
-            <div class="modal-beach" aria-hidden="true"></div>
+            <div class="modal-grid">
+            <aside class="modal-room">
+                <img id="mRoomImg" src="scene.jpg" alt="Selected room" />
+                <span class="badge" id="mRoomBadge">Best for couples</span>
+                <h2 id="modalTitle">Book Your Stay</h2>
+                <p class="muted" id="mRoomMeta">Good for 2 persons</p>
+                <p><strong id="mRoomPrice">₱2,000 per night</strong></p>
+                <p class="muted">No account needed — we'll confirm via your email. Pay-first: only paid bookings occupy the room.</p>
+            </aside>
+            <div class="modal-form">
             <div id="modalFormView">
                 <p class="label">QUICK RESERVE</p>
-                <h2 id="modalTitle">Book Your Stay</h2>
-                <p class="muted">No account needed — we'll confirm via your email.</p>
                 <p class="muted" id="quickSessionNote" hidden></p>
                 <form id="quickReserveForm" novalidate>
                     <p class="steps"><span id="stepDot1" class="step-dot current">1 Details</span> → <span id="stepDot2" class="step-dot">2 Payment</span></p>
@@ -354,6 +361,7 @@
                 <p id="modalDoneText">Confirmation sent to your email.</p>
                 <p><strong>Booking ID:</strong> <span id="modalBookingId"></span></p>
                 <button type="button" class="main-button" data-close>Done</button>
+            </div>
             </div>
         </div>
     </div>

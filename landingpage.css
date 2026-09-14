@@ -627,6 +627,36 @@ nav a:hover {
 }
 .form-msg.error { background: #fdecea; border-color: #e0a8a8; color: #7a2e2e; }
 .form-msg.success { background: #E8F0DF; border-color: #6F9E72; }
+
+/* Reserve modal as mini webpage: room panel + form */
+.modal-wide { max-width: 880px; padding: 0; overflow: hidden; }
+.modal-grid { display: grid; grid-template-columns: 1fr 1.25fr; }
+.modal-room { background: #E8F0DF; padding: 26px 24px; }
+.modal-room img {
+    width: calc(100% + 48px);
+    max-width: none;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    margin: -26px -24px 16px -24px;
+}
+.modal-room h2 { color: #3F6B4F; }
+.modal-form { padding: 28px 26px; }
+.steps { font-weight: bold; color: #3F6B4F; }
+.step-dot { opacity: 0.45; }
+.step-dot.current { opacity: 1; text-decoration: none; }
+.pay-box {
+    background: white;
+    border: 1px solid #C5D4B8;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 6px;
+}
+.pay-total { font-size: 20px; color: #3F6B4F; font-weight: bold; margin: 6px 0; }
+@media (max-width: 760px) {
+    .modal-grid { grid-template-columns: 1fr; }
+    .modal-room img { height: 170px; }
+}
 /* 3x2 grid: 3 cols desktop, 2 cols tablet, 1 col mobile */
 @media (max-width: 1000px) {
     .room-container { grid-template-columns: repeat(2, 1fr); }

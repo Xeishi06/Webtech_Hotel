@@ -254,7 +254,7 @@
         <p><strong>ID:</strong> ${r.id}</p>
         <p><strong>Check-in:</strong> ${r.checkin} &nbsp; <strong>Check-out:</strong> ${r.checkout}</p>
         <p><strong>Nights:</strong> ${r.nights} &nbsp; <strong>Total:</strong> ${peso(r.total)}</p>
-        <p><strong>Payment:</strong> ${r.payment || '-'} &nbsp; <strong>Status:</strong> ${r.status}</p>
+        <p><strong>Payment:</strong> ${r.payment || '-'}${r.ref ? ' • Ref ' + r.ref : ''} &nbsp; <strong>Status:</strong> ${r.status}</p>
         <button type="button" data-cancel="${r.id}">Cancel Reservation</button>`;
       list.appendChild(div);
     });
@@ -353,21 +353,79 @@
     if (cin) cin.min = today;
     if (cout) cout.min = today;
 
+    const ROOM_INFO = {
+      'Couples Room': { img: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80', badge: 'Best for couples', meta: 'Good for 2 persons • Queen bed • Garden terrace' },
+      'Family Room 4': { img: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80', badge: 'Popular', meta: 'Good for 4 persons • 2 queen beds • Breakfast for 4' },
+      'Family Room 6': { img: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=600&q=80', badge: 'Popular', meta: 'Good for 6 persons • 3 queen beds • Breakfast for 6' },
+      'Family Room 12': { img: 'https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=600&q=80', badge: 'Big groups', meta: 'Good for 12 persons • Bunk + queen setup' },
+      'Family Room 15': { img: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=600&q=80', badge: 'Big groups', meta: 'Good for 15 persons • Whole-floor setup' }
+    };
+
     function roomKey(opt) { return (opt || '').split(' - ')[0].trim(); }
     function nights() { return calcNights(cin.value, cout.value); }
+    function overlaps(a1, b1, a2, b2) {
+      return new Date(a1) < new Date(b2) && new Date(a2) < new Date(b1);
+    }
+
+    function fillPanel(room) {
+      const info = ROOM_INFO[room];
+      const img = $('#mRoomImg');
+      if (img && info) { img.src = info.img; img.alt = room + " at Stella's Beach House"; }
+      const badge = $('#mRoomBadge');
+      if (badge) badge.textContent = info ? info.badge : 'Stella\'s pick';
+      const meta = $('#mRoomMeta');
+      if (meta) meta.textContent = info ? info.meta : 'Pick a room to see details.';
+      const price = $('#mRoomPrice');
+      if (price) price.textContent = room && PRICES[room] ? `${peso(PRICES[room])} per night` : '—';
+    }
+
+    function currentRoom() {
+      return roomSel && roomSel.selectedIndex > 0 ? roomKey(roomSel.options[roomSel.selectedIndex].text) : '';
+    }
 
     function updateTotal() {
-      if (!total) return;
-      const room = roomSel ? roomKey(roomSel.options[roomSel.selectedIndex].text) : '';
+      const room = currentRoom();
+      fillPanel(room);
       const price = PRICES[room] || 0;
       const n = nights();
-      if (!price || n <= 0) {
-        total.textContent = 'Select a room and valid dates to see your total.';
-        return;
+      if (total) {
+        if (!price || n <= 0) total.textContent = 'Select a room and valid dates to see your total.';
+        else total.innerHTML = `<strong>${room}</strong> × ${n} night${n > 1 ? 's' : ''} = <strong>${peso(price * n)}</strong>`;
       }
-      total.innerHTML = `<strong>${room}</strong> × ${n} night${n > 1 ? 's' : ''} = <strong>${peso(price * n)}</strong>`;
+      const ptl = $('#payTotalLine');
+      if (ptl) ptl.textContent = (!price || n <= 0) ? 'Total: —' : `Total: ${peso(price * n)} (${n} night${n > 1 ? 's' : ''})`;
     }
     [roomSel, cin, cout].forEach(el => el && el.addEventListener('change', updateTotal));
+
+    function gotoStep(n) {
+      const s1 = $('#payStep1'), s2 = $('#payStep2');
+      if (s1) s1.hidden = n !== 1;
+      if (s2) s2.hidden = n !== 2;
+      const d1 = $('#stepDot1'), d2 = $('#stepDot2');
+      if (d1) d1.classList.toggle('current', n === 1);
+      if (d2) d2.classList.toggle('current', n === 2);
+    }
+
+    function validStep1() {
+      const name = $('#qName').value.trim();
+      const email = $('#qEmail').value.trim();
+      const contact = $('#qContact').value.trim();
+      const room = currentRoom();
+      const n = nights();
+      if (!name) { showMsg(form, 'Please enter your full name.', false); return false; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg(form, 'Enter a valid email for confirmation.', false); return false; }
+      if (!/^09\d{9}$/.test(contact)) { showMsg(form, 'Contact must be 11 digits starting with 09.', false); return false; }
+      if (!PRICES[room]) { showMsg(form, 'Please select a room.', false); return false; }
+      if (n <= 0) { showMsg(form, 'Check-out must be after check-in.', false); return false; }
+      // Availability: block overlapping paid bookings for the same room
+      const clash = getReservations().find(r =>
+        r.room === room && r.checkin && r.checkout &&
+        overlaps(cin.value, cout.value, r.checkin, r.checkout));
+      if (clash) { showMsg(form, `${room} is already booked ${clash.checkin} → ${clash.checkout}. Pick other dates.`, false); return false; }
+      const old = form.querySelector('.form-msg');
+      if (old) old.remove();
+      return true;
+    }
 
     function open(room) {
       if (formView) formView.hidden = false;
@@ -392,6 +450,7 @@
         } else if (note) { note.hidden = true; }
       } catch { /* guest mode */ }
       updateTotal();
+      gotoStep(1);
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
     }
@@ -413,28 +472,31 @@
     const params = new URLSearchParams(location.search);
     if (params.get('reserve') !== null) open(params.get('reserve') || '');
 
+    const toPay = $('#toPayStep');
+    if (toPay) toPay.addEventListener('click', () => { if (validStep1()) { gotoStep(2); updateTotal(); } });
+    const back1 = $('#backToStep1');
+    if (back1) back1.addEventListener('click', () => gotoStep(1));
+
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
+        if (!validStep1()) { gotoStep(1); return; }
+        const ref = ($('#qRef').value || '').replace(/\D/g, '');
+        if (ref.length < 10 || ref.length > 13) return showMsg(form, 'Enter your 10–13 digit GCash reference number.', false);
         const name = $('#qName').value.trim();
         const email = $('#qEmail').value.trim();
         const contact = $('#qContact').value.trim();
-        const roomOpt = roomSel.options[roomSel.selectedIndex].text;
-        const room = roomKey(roomOpt);
+        const room = currentRoom();
         const n = nights();
-        if (!name) return showMsg(form, 'Please enter your full name.', false);
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showMsg(form, 'Enter a valid email for confirmation.', false);
-        if (!/^09\d{9}$/.test(contact)) return showMsg(form, 'Contact must be 11 digits starting with 09.', false);
-        if (!PRICES[room]) return showMsg(form, 'Please select a room.', false);
-        if (n <= 0) return showMsg(form, 'Check-out must be after check-in.', false);
         const all = getReservations();
         const booking = {
           id: 'ST-' + Date.now().toString(36).toUpperCase(),
           name, email, contact, room,
           checkin: cin.value, checkout: cout.value,
           nights: n, total: PRICES[room] * n,
-          payment: $('#qPay') ? $('#qPay').value : '',
-          status: 'Confirmed (guest)',
+          payment: 'GCash',
+          ref,
+          status: 'Confirmed (paid)',
           by: email,
           created: new Date().toISOString()
         };
@@ -443,10 +505,11 @@
         if (formView) formView.hidden = true;
         if (doneView) doneView.hidden = false;
         const dt = $('#modalDoneText');
-        if (dt) dt.textContent = `Confirmation will be sent to ${email}. Show this ID at check-in.`;
+        if (dt) dt.textContent = `${room} × ${n} night${n > 1 ? 's' : ''} — ${peso(booking.total)}. Confirmation will be sent to ${email}. Show this ID at check-in.`;
         const bid = $('#modalBookingId');
-        if (bid) bid.textContent = booking.id;
+        if (bid) bid.textContent = `${booking.id} • GCash ref ${ref}`;
         form.reset();
+        gotoStep(1);
       });
     }
   }
