@@ -453,19 +453,21 @@
 
   function initAuthNav() {
     // Swap Login/Create Account for Hi, Name/Logout when session exists.
-    // Works on any page nav that links to login.html / register.html.
     const s = getSession();
     if (!s) return;
     const first = (s.name || s.email || 'Guest').split(' ')[0];
-    document.querySelectorAll('nav a[href="login.html"]').forEach(a => {
-      if (a.hasAttribute('data-logout')) return; // inner-page Logout links stay
+    document.querySelectorAll('nav a[data-login]').forEach(a => {
       a.textContent = `Hi, ${first}`;
       a.setAttribute('href', 'account.html');
+      a.removeAttribute('data-login');
     });
-    document.querySelectorAll('nav a[href="register.html"]').forEach(a => {
-      a.textContent = 'Logout';
-      a.setAttribute('href', 'landingpage.html');
-      a.addEventListener('click', (e) => { e.preventDefault(); confirmLogout(doLogout); });
+    document.querySelectorAll('nav a[data-register], nav button[data-register]').forEach(a => {
+      const out = document.createElement('a');
+      out.textContent = 'Logout';
+      out.setAttribute('href', 'landingpage.html');
+      out.className = a.className;
+      out.addEventListener('click', (e) => { e.preventDefault(); confirmLogout(doLogout); });
+      a.replaceWith(out);
     });
   }
 
@@ -496,6 +498,10 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !modal.hidden) close();
     });
+    // Support landingpage.html?login=1 (old login.html links/bookmarks)
+    try {
+      if (new URLSearchParams(location.search).get('login') !== null && !getSession()) open();
+    } catch { /* ignore */ }
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -539,6 +545,10 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !modal.hidden) close();
     });
+    // Support landingpage.html?register=1 (old register.html links/bookmarks)
+    try {
+      if (new URLSearchParams(location.search).get('register') !== null && !getSession()) open();
+    } catch { /* ignore */ }
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();

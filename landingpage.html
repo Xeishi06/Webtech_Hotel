@@ -21,8 +21,8 @@
             <a href="#about">About</a>
             <a href="#rooms">Rooms</a>
             <a href="#contact">Contact</a>
-            <a href="login.html" data-login>Login</a>
-            <a href="register.html" class="register-button" data-register>
+            <a href="landingpage.html?login=1" data-login>Login</a>
+            <a href="landingpage.html?register=1" class="register-button" data-register>
                 Create Account
             </a>
         </div>
@@ -267,9 +267,9 @@
 
         </div>
 
-        <a href="register.html" class="main-button">
+        <button type="button" class="main-button" data-register>
             Create Account
-        </a>
+        </button>
 
     </section>
 
@@ -365,7 +365,7 @@
                 <input id="qLoginPassword" type="password" placeholder="Enter your password" required autocomplete="current-password" />
                 <button type="submit" class="main-button modal-submit">Login</button>
             </form>
-            <p>Don't have an account? <a href="register.html">Create an account</a></p>
+            <p>Don't have an account? <a href="landingpage.html?register=1" data-register data-close-login>Create an account</a></p>
         </div>
     </div>
 
@@ -386,7 +386,7 @@
                 <input id="qRegPassword2" type="password" placeholder="Confirm your password" required autocomplete="new-password" />
                 <button type="submit" class="main-button modal-submit">Register</button>
             </form>
-            <p>Already have an account? <a href="login.html">Login here</a></p>
+            <p>Already have an account? <a href="landingpage.html?login=1" data-login data-close-register>Login here</a></p>
         </div>
     </div>
 
