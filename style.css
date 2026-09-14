@@ -45,6 +45,11 @@ nav a[data-logout]:hover {
     background-color: rgba(163, 61, 61, 0.45);
 }
 
+.register-button {
+    background-color: #E8D5B5 !important;
+    color: #3F6B4F !important;
+}
+
 nav a.active {
     text-decoration: underline;
     font-weight: bold;
