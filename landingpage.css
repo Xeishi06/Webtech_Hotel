@@ -48,7 +48,8 @@ nav a:hover {
     text-decoration: none;
 }
 nav a[data-logout]:hover, nav a[data-logout-link]:hover {
-    background-color: rgba(163, 61, 61, 0.45);
+    background-color: rgba(163, 61, 61, 0.55);
+    color: white;
 }
 
 nav a.active {
