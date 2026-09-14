@@ -37,6 +37,16 @@ nav {
 nav h2 {
     color: white;
     margin: 0;
+    display: flex;
+    align-items: center;
+}
+.brand-logo {
+    height: 38px;
+    width: 38px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+    background: white;
 }
 
 nav a {
