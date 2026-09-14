@@ -352,6 +352,7 @@
             <div class="modal-grid">
             <aside class="modal-room">
                 <img id="mRoomImg" src="scene.jpg" alt="Selected room" />
+                <div class="modal-thumbs" id="mThumbs" role="tablist" aria-label="Room photos"></div>
                 <span class="badge" id="mRoomBadge">Best for couples</span>
                 <h2 id="modalTitle">Book Your Stay</h2>
                 <p class="muted" id="mRoomMeta">Good for 2 persons</p>
@@ -435,12 +436,18 @@
     if (cin) cin.min = today;
     if (cout) cout.min = today;
 
+    const U = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80`;
     const ROOM_INFO = {
-      'Couples Room': { img: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80', badge: 'Best for couples', meta: 'Good for 2 persons • Queen bed • Garden terrace' },
-      'Family Room 4': { img: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80', badge: 'Popular', meta: 'Good for 4 persons • 2 queen beds • Breakfast for 4' },
-      'Family Room 6': { img: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=600&q=80', badge: 'Popular', meta: 'Good for 6 persons • 3 queen beds • Breakfast for 6' },
-      'Family Room 12': { img: 'https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=600&q=80', badge: 'Big groups', meta: 'Good for 12 persons • Bunk + queen setup' },
-      'Family Room 15': { img: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=600&q=80', badge: 'Big groups', meta: 'Good for 15 persons • Whole-floor setup' }
+      'Couples Room': { badge: 'Best for couples', meta: 'Good for 2 persons • Queen bed • Garden terrace',
+        photos: [U('photo-1611892440504-42a792e24d32'), U('photo-1571896349842-33c89424de2d'), U('photo-1520250497591-112f2f40a3f4')] },
+      'Family Room 4': { badge: 'Popular', meta: 'Good for 4 persons • 2 queen beds • Breakfast for 4',
+        photos: [U('photo-1590490360182-c33d57733427'), U('photo-1596394516093-501ba68a0ba6'), U('photo-1615874959474-d609969a20ed')] },
+      'Family Room 6': { badge: 'Popular', meta: 'Good for 6 persons • 3 queen beds • Breakfast for 6',
+        photos: [U('photo-1618773928121-c32242e63f39'), U('photo-1560185127-6ed189bf02f4'), U('photo-1598928506319-c55ded91a20c')] },
+      'Family Room 12': { badge: 'Big groups', meta: 'Good for 12 persons • Bunk + queen setup',
+        photos: [U('photo-1591088398332-8a7791972843'), U('photo-1616594039964-ae9021a400a0'), U('photo-1560185893-a55cbc8c57e8')] },
+      'Family Room 15': { badge: 'Big groups', meta: 'Good for 15 persons • Whole-floor setup',
+        photos: [U('photo-1566665797739-1674de7a421a'), U('photo-1602002418082-a4443e081dd1'), U('photo-1595576508898-0ad5c879a061')] }
     };
 
     function roomKey(opt) { return (opt || '').split(' - ')[0].trim(); }
@@ -452,7 +459,30 @@
     function fillPanel(room) {
       const info = ROOM_INFO[room];
       const img = $('#mRoomImg');
-      if (img && info) { img.src = info.img; img.alt = room + " at Stella's Beach House"; }
+      const thumbs = $('#mThumbs');
+      if (thumbs) {
+        const photos = info ? info.photos : ['scene.jpg'];
+        thumbs.innerHTML = '';
+        photos.forEach((src, i) => {
+          const t = document.createElement('img');
+          t.src = src;
+          t.alt = `${room || 'Room'} photo ${i + 1}`;
+          t.loading = 'lazy';
+          t.className = i === 0 ? 'active' : '';
+          t.onerror = () => { t.src = 'scene.jpg'; };
+          t.addEventListener('click', () => {
+            if (img) {
+              img.style.opacity = '0';
+              setTimeout(() => { img.src = src; img.alt = t.alt; img.style.opacity = '1'; }, 150);
+              img.onerror = () => { img.src = 'scene.jpg'; };
+            }
+            thumbs.querySelectorAll('img').forEach(x => x.classList.remove('active'));
+            t.classList.add('active');
+          });
+          thumbs.appendChild(t);
+        });
+      }
+      if (img && info) { img.src = info.photos[0]; img.alt = room + " at Stella's Beach House"; }
       const badge = $('#mRoomBadge');
       if (badge) badge.textContent = info ? info.badge : 'Stella\'s pick';
       const meta = $('#mRoomMeta');
