@@ -214,16 +214,19 @@ nav a.active {
     text-align: center;
 }
 .reserve-pill {
+    display: block;
     background-color: #6F9E72;
     color: white !important;
     padding: 12px 20px;
     border-radius: 20px;
     text-align: center;
+    text-decoration: none;
     border: none;
     cursor: pointer;
     font: inherit;
     font-weight: bold;
     width: 100%;
+    box-sizing: border-box;
     transition: background-color 0.25s ease, transform 0.25s ease;
 }
 .reserve-pill:hover {
