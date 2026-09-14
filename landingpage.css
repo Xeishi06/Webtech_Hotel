@@ -518,7 +518,7 @@ nav a:hover {
 .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: linear-gradient(rgba(40, 80, 50, 0.45), rgba(40, 80, 50, 0.45)), url("scene.jpg") center / cover;
+    background: rgba(232, 213, 181, 0.6);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: flex;
