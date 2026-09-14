@@ -374,6 +374,10 @@ nav a.active {
 .contact a:hover { color: #527A57; text-decoration: none; }
 .contact-card a {
     display: inline-block;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+    font-size: 15px;
     background: #E8F0DF;
     border: 1px solid #C5D4B8;
     padding: 6px 14px;
