@@ -356,8 +356,10 @@ nav a.active {
 
 .contact-info div {
     background-color: white;
-    width: 220px;
-    padding: 20px;
+    width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 24px;
     border-radius: 10px;
     border: 1px solid #C5D4B8;
 }
