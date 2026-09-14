@@ -205,6 +205,11 @@ nav a.active {
 .room-card strong { font-size: 17px; letter-spacing: 0.2px; }
 .room-card a { color: #3F6B4F; font-weight: 600; text-decoration: none; }
 .room-card a:hover { color: #527A57; text-decoration: none; }
+.room-card a.main-button, .room-card a.second-button {
+    color: white;
+}
+.room-card a.main-button:hover { color: white; background-color: #527A57; }
+.room-card a.second-button:hover { color: #3F6B4F; }
 
 .room-card img {
     width: calc(100% + 48px);
