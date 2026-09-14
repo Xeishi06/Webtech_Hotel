@@ -370,6 +370,8 @@ nav a.active {
 .contact-info p {
     color: #666;
 }
+.contact a { color: #3F6B4F; font-weight: 600; text-decoration: none; }
+.contact a:hover { color: #527A57; text-decoration: none; }
 
 .contact .main-button {
     background-color: #6F9E72;
