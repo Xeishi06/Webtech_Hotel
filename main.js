@@ -419,9 +419,28 @@
     }
   }
 
+  function initAuthNav() {
+    // Swap Login/Create Account for Hi, Name/Logout when session exists.
+    // Works on any page nav that links to login.html / register.html.
+    const s = getSession();
+    if (!s) return;
+    const first = (s.name || s.email || 'Guest').split(' ')[0];
+    document.querySelectorAll('nav a[href="login.html"]').forEach(a => {
+      if (a.hasAttribute('data-logout')) return; // inner-page Logout links stay
+      a.textContent = `Hi, ${first}`;
+      a.setAttribute('href', 'account.html');
+    });
+    document.querySelectorAll('nav a[href="register.html"]').forEach(a => {
+      a.textContent = 'Logout';
+      a.setAttribute('href', 'login.html');
+      a.addEventListener('click', () => localStorage.removeItem('stella_session'));
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     markActiveNav();
     initMobileNav();
+    initAuthNav();
     initSmoothScroll();
     initReveal();
     initQuickReserve();
