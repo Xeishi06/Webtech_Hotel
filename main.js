@@ -837,6 +837,9 @@
 
     const params = new URLSearchParams(location.search);
     if (params.get('reserve') !== null) open(params.get('reserve') || '');
+    try {
+      if (params.has('reserve')) { params.delete('reserve'); const q = params.toString(); history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); }
+    } catch {}
 
     const checkBtn = $('#checkAvail');
     if (checkBtn) checkBtn.addEventListener('click', () => {
@@ -987,6 +990,10 @@
     }
     function close() {
       modal.hidden = true;
+      try {
+        const u = new URLSearchParams(location.search);
+        if (u.has('login')) { u.delete('login'); const q = u.toString(); history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); }
+      } catch {}
       if ($('#reserveModal') && $('#reserveModal').hidden) document.body.style.overflow = '';
     }
     document.addEventListener('click', (e) => {
@@ -1004,6 +1011,8 @@
     });
     try {
       if (new URLSearchParams(location.search).get('login') !== null && !getSession()) open();
+      const u = new URLSearchParams(location.search);
+      if (u.has('login')) { u.delete('login'); const q = u.toString(); history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); }
     } catch {}
     if (form) {
       form.addEventListener('submit', (e) => {
@@ -1022,53 +1031,117 @@
 
   function initRegisterModal() {
     const modal = $('#registerModal');
-    if (!modal) return;
     const form = $('#quickRegisterForm');
     function open() {
+      if (!modal) return;
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
       const n = $('#qRegName');
       if (n) n.focus();
     }
     function close() {
-      modal.hidden = true;
+      if (modal) modal.hidden = true;
+      try {
+        const u = new URLSearchParams(location.search);
+        if (u.has('register')) { u.delete('register'); const q = u.toString(); history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); }
+      } catch {}
       if ($('#reserveModal') && $('#reserveModal').hidden
-        && $('#loginModal') && $('#loginModal').hidden) document.body.style.overflow = '';
+        && (!$('#loginModal') || $('#loginModal').hidden)) document.body.style.overflow = '';
     }
     document.addEventListener('click', (e) => {
       const t = e.target.closest('[data-register]');
       if (t) {
         if (getSession()) return; // already swapped to Logout
+        if (!modal) return; // dedicated register.html handles it
         e.preventDefault();
         open();
         return;
       }
-      if (e.target.closest('[data-close-register]') || e.target === modal) close();
+      if ((e.target.closest('[data-close-register]') || e.target === modal) && modal) close();
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.hidden) close();
+      if (e.key === 'Escape' && modal && !modal.hidden) close();
     });
     try {
-      if (new URLSearchParams(location.search).get('register') !== null && !getSession()) open();
+      if (modal && new URLSearchParams(location.search).get('register') !== null && !getSession()) open();
+      const u = new URLSearchParams(location.search);
+      if (u.has('register')) { u.delete('register'); const q = u.toString(); history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); }
     } catch {}
     if (form) {
+      const regAlert = () => document.getElementById('regAlert');
+      const regFail = (msg, focusEl) => {
+        const box = regAlert();
+        if (box) { box.hidden = false; box.textContent = msg; box.classList.add('error'); }
+        else showMsg(form, msg, false);
+        if (focusEl) focusEl.focus();
+      };
+      const pwOk = (pw) => pw.length >= 8 && /[A-Za-z]/.test(pw) && /[0-9]/.test(pw);
+      const paintPw = () => {
+        const pw = ($('#qRegPassword') || {}).value || '';
+        const pw2 = ($('#qRegPassword2') || {}).value || '';
+        const rules = { len: pw.length >= 8, mix: /[A-Za-z]/.test(pw) && /[0-9]/.test(pw), match: !!pw && pw === pw2 };
+        document.querySelectorAll('#pwRules [data-rule]').forEach(li => {
+          const ok = !!rules[li.getAttribute('data-rule')];
+          li.textContent = (ok ? '✓ ' : '✗ ') + li.textContent.replace(/^[✓✗] /, '');
+          li.style.color = ok ? '#3F6B4F' : '#7a2e2e';
+        });
+        const score = (rules.len ? 1 : 0) + (rules.mix ? 1 : 0) + (rules.match ? 1 : 0);
+        const bar = document.getElementById('pwStrength');
+        if (bar) {
+          bar.style.width = (score * 34) + '%';
+          bar.style.backgroundColor = score < 2 ? '#a33d3d' : (score < 3 ? '#c98a2b' : '#3F6B4F');
+        }
+      };
+      ['qRegPassword', 'qRegPassword2'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', paintPw);
+      });
+      paintPw();
+      document.querySelectorAll('[data-showpw]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const el = document.getElementById(btn.getAttribute('data-showpw'));
+          if (!el) return;
+          const show = el.type === 'password';
+          el.type = show ? 'text' : 'password';
+          btn.textContent = show ? 'Hide' : 'Show';
+          el.focus();
+        });
+      });
+      let busy = false;
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const name = $('#qRegName').value.trim();
-        const email = $('#qRegEmail').value.trim().toLowerCase();
-        const pw = $('#qRegPassword').value;
-        const pw2 = $('#qRegPassword2').value;
-        if (!name || !email || !pw) return showMsg(form, 'Please fill in all fields.', false);
-        if (pw.length < 6) return showMsg(form, 'Password must be at least 6 characters.', false);
-        if (pw !== pw2) return showMsg(form, 'Passwords do not match.', false);
-        const users = getUsers();
-        if (users.some(u => u.email === email)) return showMsg(form, 'That email is already registered. Try logging in.', false);
-        users.push({ name, email, pw, contact: '', created: new Date().toISOString() });
-        saveUsers(users);
-        setSession({ name, email });
-        showMsg(form, 'Welcome, ' + name + '! Your account is ready.', true);
+        if (busy) return;
+        const nameEl = $('#qRegName'), emailEl = $('#qRegEmail'), pwEl = $('#qRegPassword'), pw2El = $('#qRegPassword2');
+        const name = (nameEl.value || '').trim().replace(/\s+/g, ' ');
+        const email = (emailEl.value || '').trim().toLowerCase();
+        const pw = pwEl.value || '';
+        const pw2 = pw2El.value || '';
+        if (name.length < 2) return regFail('Please enter your full name.', nameEl);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return regFail('Enter a valid email address.', emailEl);
+        if (!pwOk(pw)) return regFail('Password needs 8+ characters with a letter and a number.', pwEl);
+        if (pw !== pw2) return regFail('Passwords do not match.', pw2El);
+        let users = [];
+        try { users = getUsers(); }
+        catch { return regFail('Storage is unavailable in this browser. Try another browser.', null); }
+        if (users.some(u => (u.email || '').toLowerCase() === email)) return regFail('That email is already registered. Try logging in.', emailEl);
+        busy = true;
+        const btn = document.getElementById('regSubmit');
+        if (btn) { btn.disabled = true; btn.textContent = 'Creating account...'; }
+        try {
+          users.push({ name, email, pw, contact: '', created: new Date().toISOString() });
+          saveUsers(users);
+          setSession({ name, email });
+        } catch {
+          busy = false;
+          if (btn) { btn.disabled = false; btn.textContent = 'Register'; }
+          return regFail('Could not save your account (storage blocked or full).', null);
+        }
+        const box = regAlert();
+        if (box) { box.hidden = false; box.textContent = 'Welcome, ' + name + '! Your account is ready.'; box.classList.remove('error'); box.classList.add('success'); }
+        else showMsg(form, 'Welcome, ' + name + '! Your account is ready.', true);
         initAuthNav();
-        setTimeout(close, 800);
+        if (modal) setTimeout(close, 800);
+        else setTimeout(() => { location.href = 'landingpage.html'; }, 900);
       });
     }
   }
