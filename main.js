@@ -9,6 +9,10 @@
 
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+  // Backdrop clicks only count when the press STARTED on the backdrop
+  // (so text-selection drags ending outside never close modals).
+  let lastDownTarget = null;
+  document.addEventListener('mousedown', (e) => { lastDownTarget = e.target; }, true);
   const peso = (n) => '₱' + Number(n).toLocaleString('en-PH');
   const fmtLong = (iso) => {
     const d = new Date(String(iso) + 'T00:00:00');
@@ -829,7 +833,7 @@
     document.addEventListener('click', (e) => {
       const t = e.target.closest('[data-reserve]');
       if (t) { open(t.getAttribute('data-reserve') || ''); return; }
-      if (e.target.closest('[data-close]') || e.target === modal) close();
+      if (e.target.closest('[data-close]') || (e.target === modal && lastDownTarget === modal)) close();
     });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !modal.hidden) close();
@@ -1004,7 +1008,7 @@
         open();
         return;
       }
-      if (e.target.closest('[data-close-login]') || e.target === modal) close();
+      if (e.target.closest('[data-close-login]') || (e.target === modal && lastDownTarget === modal)) close();
     });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !modal.hidden) close();
@@ -1057,7 +1061,7 @@
         open();
         return;
       }
-      if ((e.target.closest('[data-close-register]') || e.target === modal) && modal) close();
+      if ((e.target.closest('[data-close-register]') || (e.target === modal && lastDownTarget === modal)) && modal) close();
     });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal && !modal.hidden) close();
@@ -1202,7 +1206,7 @@
         paintStars();
         return;
       }
-      if (modal && (e.target.closest('[data-close-feedback]') || e.target === modal)) {
+      if (modal && (e.target.closest('[data-close-feedback]') || (e.target === modal && lastDownTarget === modal))) {
         modal.hidden = true;
         document.body.style.overflow = '';
       }
