@@ -66,6 +66,13 @@ footer a { color: #fff; }
 .form-msg { padding: 10px 12px; border-radius: 8px; background: #E8F0DF; border: 1px solid var(--stella-border); color: var(--stella-green); margin: 0 0 12px 0; font-size: 14px; }
 .form-msg.error { background: #fdecea; border-color: #e0a8a8; color: #7a2e2e; }
 .form-msg.success { background: #E8F0DF; border-color: var(--stella-light); }
+/* Kill browser autofill yellow — keep fields white with theme text */
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus,
+textarea:-webkit-autofill, select:-webkit-autofill {
+  -webkit-text-fill-color: var(--stella-ink);
+  -webkit-box-shadow: 0 0 0 1000px #fff inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
 /* Injected reserve modal (room pages) — old-UI look, brands the markup main.js injects */
 #reserveModal.modal-backdrop { background: rgba(40,80,50,.55); display: flex; align-items: center; justify-content: center; padding: 15px; overflow: auto; position: fixed; inset: 0; z-index: 1050; }
 .modal-backdrop .modal { display: block; position: relative; width: 100%; height: auto; }
