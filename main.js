@@ -37,7 +37,7 @@
   function saveReservations(r) { localStorage.setItem('stella_reservations', JSON.stringify(r)); }
 
   function markActiveNav() {
-    const page = (location.pathname.split('/').pop() || 'landingpage.html').toLowerCase();
+    const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
     $$('nav a').forEach(a => {
       const href = (a.getAttribute('href') || '').toLowerCase();
       if (href === page) a.classList.add('active');
@@ -104,7 +104,7 @@
       if (!found) return showMsg(form, 'Invalid email or password. Register first if you are new.', false);
       setSession({ name: found.name, email: found.email });
       showMsg(form, 'Welcome, ' + found.name + '!', true);
-      setTimeout(() => location.href = 'landingpage.html', 700);
+      setTimeout(() => location.href = 'index.html', 700);
     });
   }
 
@@ -133,7 +133,7 @@
 
   function doLogout() {
     localStorage.removeItem('stella_session');
-    location.href = 'landingpage.html';
+    location.href = 'index.html';
   }
 
   function initLogout() {
@@ -974,7 +974,7 @@
     document.querySelectorAll('nav a[data-register], nav button[data-register]').forEach(a => {
       const out = document.createElement('a');
       out.textContent = 'Logout';
-      out.setAttribute('href', 'landingpage.html');
+      out.setAttribute('href', 'index.html');
       out.setAttribute('data-logout-link', '');
       out.className = a.className;
       out.addEventListener('click', (e) => { e.preventDefault(); confirmLogout(doLogout); });
@@ -1145,7 +1145,7 @@
         else showMsg(form, 'Welcome, ' + name + '! Your account is ready.', true);
         initAuthNav();
         if (modal) setTimeout(close, 800);
-        else setTimeout(() => { location.href = 'landingpage.html'; }, 900);
+        else setTimeout(() => { location.href = 'index.html'; }, 900);
       });
     }
   }
