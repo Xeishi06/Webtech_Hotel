@@ -1,0 +1,179 @@
+/* ==========================================================
+   Staff dashboard (admin.php)
+   ========================================================== */
+
+.admin {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 60px 24px 10px;
+}
+
+.admin .section-description {
+    color: var(--muted, #5d6b74);
+    margin-bottom: 28px;
+}
+
+/* ---- stat tiles ---- */
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 34px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #e6e1d8;
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 6px 18px rgba(34, 48, 60, .05);
+}
+
+.stat-card .stat-value {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: #22303c;
+}
+
+.stat-card .stat-label {
+    font-size: .78rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: #7b8a93;
+}
+
+.stat-card.on-hold .stat-value { color: #b3801f; }
+.stat-card.confirmed .stat-value { color: #2f7d5d; }
+.stat-card.upcoming .stat-value { color: #2c6a8f; }
+
+/* ---- filters ---- */
+
+.admin-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.admin-filters a {
+    font-size: .82rem;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid #e0dad0;
+    color: #46545d;
+    text-decoration: none;
+}
+
+.admin-filters a:hover { background: #f6f2ec; }
+
+.admin-filters a.current {
+    background: #22303c;
+    border-color: #22303c;
+    color: #fff;
+}
+
+/* ---- table ---- */
+
+.admin-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e6e1d8;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .9rem;
+}
+
+.admin-table th,
+.admin-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f0ece4;
+}
+
+.admin-table th {
+    font-size: .74rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #8a969d;
+    background: #faf8f4;
+}
+
+.admin-table tr:last-child td { border-bottom: none; }
+
+.admin-table .muted {
+    color: #7b8a93;
+    font-size: .82rem;
+    line-height: 1.5;
+}
+
+.admin-status-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 190px;
+}
+
+.admin-status-form select {
+    padding: 8px 10px;
+    border: 1px solid #ddd6cb;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: .84rem;
+    background: #fff;
+}
+
+.admin-status-form button {
+    align-self: flex-start;
+    padding: 7px 16px;
+    font-size: .8rem;
+}
+
+/* ---- guest messages ---- */
+
+.message-list {
+    display: grid;
+    gap: 14px;
+}
+
+.message-card {
+    background: #fff;
+    border: 1px solid #e6e1d8;
+    border-left: 4px solid #c98a3c;
+    border-radius: 12px;
+    padding: 16px 20px;
+}
+
+.message-card.handled {
+    border-left-color: #cfd6da;
+    opacity: .72;
+}
+
+.message-card header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: baseline;
+    font-size: .88rem;
+    margin-bottom: 8px;
+}
+
+.message-card header .muted { font-size: .78rem; }
+.message-card p { margin: 0 0 12px; line-height: 1.6; }
+
+/* ---- responsive ---- */
+
+@media (max-width: 720px) {
+    .admin { padding: 40px 16px 0; }
+    .admin-table th:nth-child(4),
+    .admin-table td:nth-child(4) { display: none; }
+}

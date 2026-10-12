@@ -1,0 +1,8 @@
+# Uploaded profile photos and bank receipts are user data - never commit them.
+uploads/avatars/*
+uploads/receipts/*
+!uploads/avatars/.gitkeep
+!uploads/receipts/.gitkeep
+
+# Mail that could not be sent (contains verification codes).
+storage/mail.log
