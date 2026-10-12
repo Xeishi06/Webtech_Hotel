@@ -1,98 +1,94 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lato:wght@400;700;900&family=Pacifico&display=swap" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Your account at Stella's Beach House" />
     <title>My Account - Stella's Beach House</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="stella-logo-96.png" />
-    <meta name="theme-color" content="#3F6B4F" />
-    <link rel="stylesheet" href="stella-bootstrap.css" />
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-xl navbar-dark sticky-top" style="background-color:rgba(63,107,79,.95)">
-      <div class="container-fluid">
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html#home"><img src="stella-logo-96.png" alt="Stella Stay logo" width="96" height="96" class="rounded-circle bg-white me-2" style="width:38px;height:38px;object-fit:cover" /> Stella Stay</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navMenu">
-          <ul class="navbar-nav mx-auto mb-2 mb-xl-0 align-items-xl-center">
-            <li class="nav-item"><a class="nav-link" href="index.html#home">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="index.html#rooms">Rooms</a></li>
-            <li class="nav-item"><a class="nav-link" href="index.html#why-us">Reviews</a></li>
-            <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
-            <li class="nav-item"><a class="nav-link" href="my-reservations.html">My Reservations</a></li>
-            <li class="nav-item"><a class="nav-link active" href="account.html">My Account</a></li>
-          </ul>
-          <ul class="navbar-nav mb-2 mb-xl-0 align-items-xl-center">
-            <li class="nav-item"><a class="btn btn-outline-beige btn-sm" href="index.html?login=1" data-login>Login</a></li>
-            <li class="nav-item ms-xl-2"><a class="btn btn-beige btn-sm" href="register.html" data-register>Create Account</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="container py-5">
-      <div class="row justify-content-center text-center">
-        <div class="col-lg-8">
-          <p class="label-stella">MY ACCOUNT</p>
-          <h2 class="fw-bold">Account Information</h2>
-        </div>
-      </div>
-      <div class="row justify-content-center mt-2">
-        <div class="col-md-8 col-lg-6">
-          <div class="card card-stella">
-            <div class="card-body p-4">
-              <div class="text-center mb-3">
-                <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width:72px;height:72px;background-color:var(--stella-sage);color:var(--stella-green)" aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg>
-                </div>
-                <h5 class="mt-2 mb-0"><span id="accName">Guest</span></h5>
-                <p class="small text-muted mb-0"><span id="accEmail">—</span></p>
-              </div>
-              <hr />
-              <div class="d-flex justify-content-between py-1"><span class="fw-bold">Name</span><span id="accNameDup" class="text-muted">Guest</span></div>
-              <div class="d-flex justify-content-between py-1"><span class="fw-bold">Email</span><span id="accEmailDup" class="text-muted">—</span></div>
-              <div class="d-flex justify-content-between py-1"><span class="fw-bold">Contact Number</span><span id="accContact">Not set yet</span></div>
-              <hr />
-              <div class="border rounded p-3" style="background-color:#FFF8E7;border-color:var(--stella-border) !important">
-                <form id="accountForm" novalidate>
-                  <label class="form-label fw-bold" for="accContactInput">Update Contact Number</label>
-                  <input id="accContactInput" class="form-control" type="tel" pattern="09[0-9]{9}" maxlength="11" placeholder="09XXXXXXXXX" autocomplete="tel" />
-                  <button type="submit" class="btn btn-stella w-100 mt-3">Update Account</button>
-                </form>
-              </div>
-              <div class="d-flex gap-2 mt-3">
-                <a href="my-reservations.html" class="btn btn-beige flex-fill">My Reservations</a>
-                <button type="button" class="btn btn-outline-danger flex-fill" data-logout>Logout</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <link rel="stylesheet" href="landingpage.css?v=15">
+</head>
+
+<body>
+
+
+<nav>
+
+    <h2><img class="brand-logo" src="stella-logo.png" alt="Stella Stay logo" /> Stella Stay</h2>
+
+    <div class="nav-links">
+    <a href="landingpage.html#home">Home</a>
+    <a href="landingpage.html#about">About</a>
+    <a href="landingpage.html#rooms">Rooms</a>
+    <a href="landingpage.html#reviews">Reviews</a>
+    <a href="landingpage.html#contact">Contact</a>
+    <a href="my-reservations.html">My Reservations</a>
     </div>
-    <footer class="text-center py-4">
-      <div class="container">
-        <h5 class="fw-bold text-white">Stella's Beach House</h5>
-        <p class="mb-1">Relax. Enjoy. Make Memories.</p>
-        <p class="small mb-1">Check-in 2:00 PM - Check-out 12:00 NN - 50% deposit reserves your dates</p>
-        <p class="small opacity-75">No smoking indoors - Pets on request - Quiet hours 10 PM – 6 AM</p>
-        <p class="small"><a href="index.html#home" class="link-light">Home</a> - <a href="index.html#about" class="link-light">About</a> - <a href="index.html#rooms" class="link-light">Rooms</a> - <a href="index.html#contact" class="link-light">Contact</a> - <a href="index.html#home" class="link-light">Back to top</a></p>
-        <p class="small mb-0">&copy; 2026 Stella's Beach House</p>
-      </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <div class="nav-auth">
+    <a href="landingpage.html?login=1" class="login-button" data-login>Login</a>
+    <a href="landingpage.html" class="register-button" data-logout-link hidden>Logout</a>
+    </div>
+
+</nav>
+
+
+<section class="rooms account-page">
+
+    <p class="label">MY ACCOUNT</p>
+
+    <h2>Account Information</h2>
+
+    <div class="account-card">
+        <div class="profile-row">
+            <span id="accAvatar"></span>
+            <div>
+                <p class="profile-title">Profile Photo</p>
+                <p class="muted">Optional — shows beside your name on reviews.</p>
+                <p class="profile-actions">
+                    <label for="accAvatarInput" class="file-btn">Choose Photo</label>
+                    <input id="accAvatarInput" type="file" accept="image/*" hidden />
+                    <button type="button" class="details-link" id="accAvatarRemove">Remove</button>
+                </p>
+            </div>
+        </div>
+
+        <hr />
+        <p><strong>Name:</strong> <span id="accName">Guest</span></p>
+        <p><strong>Email:</strong> <span id="accEmail">—</span></p>
+        <p><strong>Contact Number:</strong> <span id="accContact">Not set yet</span></p>
+
+        <hr />
+        <form id="accountForm" novalidate>
+            <label for="accContactInput">Update Contact Number</label>
+            <input id="accContactInput" type="tel" pattern="09[0-9]{9}" maxlength="11" placeholder="09XXXXXXXXX" />
+            <button type="submit" class="main-button button-reset">Update Account</button>
+        </form>
+
+        <p class="delete-account-row"><button type="button" class="delete-link" id="deleteAccountBtn">Delete my account</button></p>
+    </div>
+
+</section>
+
+
+<footer class="footer-compact">
+
+    <h3>Stella's Beach House</h3>
+
+    <p>
+        Relax. Enjoy. Make Memories.
+    </p>
+
+    <p>
+        &copy; 2026 Stella's Beach House
+    </p>
+
+</footer>
+
+
     <script src="main.js"></script>
-    <script>
-(function () {
-  function mirror() {
-    var n = document.getElementById('accName'), nd = document.getElementById('accNameDup');
-    var e = document.getElementById('accEmail'), ed = document.getElementById('accEmailDup');
-    if (n && nd && nd.textContent !== n.textContent) nd.textContent = n.textContent;
-    if (e && ed && ed.textContent !== e.textContent) ed.textContent = e.textContent;
-  }
-  new MutationObserver(mirror).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
-  document.addEventListener('DOMContentLoaded', function () { setTimeout(mirror, 300); });
-})();
-    </script>
-  </body>
+</body>
 </html>
